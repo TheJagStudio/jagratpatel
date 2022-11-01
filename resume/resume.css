@@ -1,0 +1,1253 @@
+/*
+	@name frame
+*/
+/* Only edit this if you know what you are doing! */
+body { margin: 0px; padding: 0px; font-family:"Arial"; overflow-x:hidden; }
+
+/* Only edit this if you know what you are doing! */
+img { position: absolute; display: block; margin: 0px; border: none; padding: 0px; }
+
+/* Only edit this if you know what you are doing! */
+div { position: absolute; }
+
+#content-container { display: block; position: relative; width: 1258px; width: 1258px; height: 1760px; overflow: hidden; display: block;  margin-left: auto; margin-right: auto;  }
+
+
+#page_frame_ek1 {
+	top: 0px;
+	left: 0px;
+	width: 1258px;
+	height: 1760px;
+}
+
+#_bg__frame_ek2 {
+	top: 0px;
+	left: 0px;
+	width: 1258px;
+	height: 1760px;
+	background:rgba(255,255,255,1);
+}
+
+#group {
+	top: 6px;
+	left: 9px;
+	width: 1236px;
+	height: 72px;
+}
+
+#rectangle_2 {
+	top: 0px;
+	left: 0px;
+	width: 1236px;
+	height: 72px;
+}
+
+
+#rectangle_8 {
+	top: 15px;
+	left: 888px;
+	width: 140px;
+	height: 58px;
+}
+
+
+#rectangle_3 {
+	top: 78px;
+	left: 9px;
+	width: 1240px;
+	height: 1637px;
+}
+
+
+#rectangle_17 {
+	top: 5px;
+	left: 7px;
+	width: 1244px;
+	height: 1682px;
+}
+
+#group_ek1 {
+	top: 106px;
+	left: 352px;
+	width: 817px;
+	height: 191px;
+}
+
+#rectangle_5 {
+	top: 0px;
+	left: 0px;
+	width: 817px;
+	height: 191px;
+}
+
+#group_ek2 {
+	top: 106px;
+	left: 53px;
+	width: 276px;
+	height: 525px;
+}
+
+#rectangle_9 {
+	top: 0px;
+	left: 0px;
+	width: 276px;
+	height: 525px;
+}
+
+#group_ek3 {
+	top: 657px;
+	left: 53px;
+	width: 276px;
+	height: 191px;
+}
+
+#rectangle_13 {
+	top: 0px;
+	left: 0px;
+	width: 276px;
+	height: 191px;
+}
+
+#group_ek4 {
+	top: 330px;
+	left: 357px;
+	width: 817px;
+	height: 355px;
+}
+
+#rectangle_7 {
+	top: 0px;
+	left: 0px;
+	width: 817px;
+	height: 355px;
+}
+
+#group_ek5 {
+	top: 703px;
+	left: 357px;
+	width: 817px;
+	height: 357px;
+}
+
+#rectangle_10 {
+	top: 0px;
+	left: 0px;
+	width: 817px;
+	height: 357px;
+}
+
+#group_ek6 {
+	top: 1085px;
+	left: 357px;
+	width: 817px;
+	height: 359px;
+}
+
+#rectangle_12 {
+	top: 0px;
+	left: 0px;
+	width: 817px;
+	height: 359px;
+}
+
+#group_ek7 {
+	top: 1464px;
+	left: 358px;
+	width: 817px;
+	height: 215px;
+}
+
+#rectangle_11 {
+	top: 0px;
+	left: 0px;
+	width: 817px;
+	height: 215px;
+}
+
+
+#icons8_facebook_96 {
+	top: 6px;
+	left: 53px;
+	width: 72px;
+	height: 72px;
+}
+
+
+#rectangle_4 {
+	top: 18px;
+	left: 137px;
+	width: 370px;
+	height: 49px;
+}
+
+
+#rectangle_6 {
+	top: 140px;
+	left: 487px;
+	width: 653px;
+	height: 49px;
+}
+
+
+#rectangle_14 {
+	top: 633px;
+	left: 443px;
+	width: 702px;
+	height: 37px;
+}
+
+
+#intersection_1 {
+	top: 20px;
+	left: 897px;
+	width: 47px;
+	height: 47px;
+}
+
+
+#me_1 {
+	top: 15px;
+	left: 870px;
+	width: 54px;
+	height: 54px;
+}
+
+
+#me_2 {
+	top: 122px;
+	left: 392px;
+	width: 84px;
+	height: 84px;
+}
+
+
+#me_3 {
+	top: 632px;
+	left: 394px;
+	width: 40px;
+	height: 40px;
+}
+
+
+#me_4 {
+	top: 1009px;
+	left: 394px;
+	width: 40px;
+	height: 40px;
+}
+
+
+#me_5 {
+	top: 1395px;
+	left: 392px;
+	width: 40px;
+	height: 40px;
+}
+
+
+#new_1 {
+	top: 1111px;
+	left: 392px;
+	width: 64px;
+	height: 64px;
+}
+
+
+#jagrat_patel {
+	top: 31px;
+	left: 936px;
+	width: 139px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#1F7BF2;
+}
+
+
+#email_1 {
+	top: 236px;
+	left: 874px;
+	width: 38px;
+	height: 39px;
+}
+
+
+#like_3_1 {
+	top: 593.5px;
+	left: 448px;
+	width: 22px;
+	height: 22px;
+}
+
+
+#like_3_2 {
+	top: 964.5px;
+	left: 454.5px;
+	width: 22px;
+	height: 22px;
+}
+
+
+#like_3_3 {
+	top: 1356px;
+	left: 452px;
+	width: 22px;
+	height: 22px;
+}
+
+
+#ellipse_2 {
+	top: 15px;
+	left: 1051px;
+	width: 58px;
+	height: 58px;
+}
+
+
+#_2231957_earth_globe_notification_icon {
+	top: 375px;
+	left: 744px;
+	width: 31px;
+	height: 31px;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek1 {
+	top: 758px;
+	left: 1098px;
+	width: 31px;
+	height: 31px;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek2 {
+	top: 1134px;
+	left: 677px;
+	width: 31px;
+	height: 31px;
+}
+
+
+#ellipse_3 {
+	top: 13px;
+	left: 1116px;
+	width: 58px;
+	height: 58px;
+}
+
+
+#intersection_2 {
+	top: 123px;
+	left: 392px;
+	width: 84px;
+	height: 84px;
+}
+
+
+#intersection_4 {
+	top: 685px;
+	left: 396px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#untitled_1 {
+	top: 352px;
+	left: 383px;
+	width: 64px;
+	height: 64px;
+}
+
+
+#line_1 {
+	top: 212.5px;
+	left: 391.5px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_7 {
+	top: 588px;
+	left: 391px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_8 {
+	top: 620px;
+	left: 390px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_2 {
+	top: 437.5px;
+	left: 390.5px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_3 {
+	top: 805px;
+	left: 394px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_6 {
+	top: 1191.5px;
+	left: 396.5px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_4 {
+	top: 1570.5px;
+	left: 397.5px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#python_developer {
+	top: 27px;
+	left: 214px;
+	width: 237.5px;
+	height: 46.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 25px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#jagrat_tusharkumar_patel {
+	top: 151px;
+	left: 507px;
+	width: 317.5px;
+	height: 46.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 25px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#logotipo_do_github_2x_1 {
+	top: 23px;
+	left: 1126px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#write_a_coment___ {
+	top: 641px;
+	left: 460px;
+	width: 159px;
+	height: 34px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 18px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#gandhinagar__gujarat {
+	top: 244px;
+	left: 421px;
+	width: 229px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#636468;
+}
+
+
+#jagratpatel99_gmail_com {
+	top: 244px;
+	left: 920px;
+	width: 268px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#636468;
+}
+
+
+#__91_82008_59950 {
+	top: 244px;
+	left: 681px;
+	width: 182px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#636468;
+}
+
+
+#like {
+	top: 595.5px;
+	left: 476px;
+	width: 48.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#share {
+	top: 595.5px;
+	left: 1057px;
+	width: 61.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#programming_languages {
+	top: 135px;
+	left: 83px;
+	width: 217px;
+	height: 60px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#soft_skills {
+	top: 686px;
+	left: 83px;
+	width: 122px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#technologies {
+	top: 394px;
+	left: 83px;
+	width: 153px;
+	height: 37px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+#group_17 {
+	top: 350px;
+	left: 463px;
+	width: 281px;
+	height: 67px;
+}
+
+#aximind___bangalore___web_developer___26_12_2020 {
+	top: 31px;
+	left: 0px;
+	width: 302px;
+	height: 47px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 16px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#dec_2020___feb_2021 {
+	top: 0px;
+	left: 0px;
+	width: 258px;
+	height: 45px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek3 {
+	top: 24px;
+	left: 224px;
+	width: 1px;
+	height: 1px;
+}
+
+#group_5 {
+	top: 726px;
+	left: 544px;
+	width: 554px;
+	height: 72px;
+}
+
+#the_foundation_for_defense_of_democracies___washington_d_c___united_states___python_developer___01_03_2022 {
+	top: 36px;
+	left: 0px;
+	width: 575px;
+	height: 47px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 16px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#mar_2022 {
+	top: 0px;
+	left: 1px;
+	width: 132px;
+	height: 45px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek4 {
+	top: 25px;
+	left: 227px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#fdd_logo_web_color_1 {
+	top: 714px;
+	left: 391px;
+	width: 145px;
+	height: 84px;
+}
+
+
+#cloud_storage___gandhinagar___01_06_2022 {
+	top: 1139px;
+	left: 463px;
+	width: 239px;
+	height: 47px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 16px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#projects {
+	top: 1109px;
+	left: 463px;
+	width: 124px;
+	height: 45px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek5 {
+	top: 1178px;
+	left: 640px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#class_12__atmiya_vidhya_mandir_surat___2020 {
+	top: 1513px;
+	left: 398px;
+	width: 298px;
+	height: 47px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 16px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#schooling {
+	top: 1483px;
+	left: 398px;
+	width: 146px;
+	height: 45px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek6 {
+	top: 1550px;
+	left: 568px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#be_computer_engineering__ldrp_itr_gandhinagar___ongoing {
+	top: 1611px;
+	left: 399px;
+	width: 394px;
+	height: 47px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 16px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#college {
+	top: 1581px;
+	left: 399px;
+	width: 116px;
+	height: 45px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color:#000000;
+}
+
+
+#_2231957_earth_globe_notification_icon_ek7 {
+	top: 1648px;
+	left: 646px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#i_started_working_in_aximind_as_an_web_developer_for_their_website_and_had_a_great_opportunity_to_test_all_my_skills__this_happens_to_be_my_first_job_as_an_developer__before_which_i_used_to_be_a_freelancer_and_would_work_on_project_based_on_python_language__at_aximind__i_also_happened_to_get_knowlege_about_ar_vr_technology_which_helped_me_a_lot_in_future_ {
+	top: 460px;
+	left: 391px;
+	width: 774px;
+	height: 129px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	text-align: left;
+	color:#000000;
+}
+
+
+#i_am_currently_working_in_fdd_and_as_an_python_web_developer__here_at_fdd_i_am_responsible_to_handle_python_based_api_s_made_for_different_projects__fdd_provided_me_with_leadership_skills_by_making_me_project_manager_for_two_projects_and_improved_my_understanding_about_resource_and_skill_management__here_i_am_also_responsible_for_all_python_based_web_development_projects_ {
+	top: 827.5px;
+	left: 394.5px;
+	width: 773px;
+	height: 129px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	text-align: left;
+	color:#000000;
+}
+
+
+#i_am_working_upon_my_own_project_free_and_unlimited_decentralized_cloud_storage_which_will_provide_all_user_cloud_storage_at_no_cost__i_have_also_worked_on_many_projects_for_many_companies_which_include_pruthatek__fdd__aximind__hir_education_and_many_more__i_love_to_take_part_in_hackathons_and_due_to_that_i_have_created_many_projects_which_includes_technologies_like_web_scraping__machine_learning__cryptogrphy_and_blockchain_ {
+	top: 1214px;
+	left: 395px;
+	width: 770px;
+	height: 152px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 20px;
+	text-align: left;
+	color:#000000;
+}
+
+
+#loupe {
+	top: 27px;
+	left: 161px;
+	width: 30px;
+	height: 30px;
+}
+
+
+#linkedin {
+	top: 25px;
+	left: 1061px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#logotipo_do_github {
+	top: 23px;
+	left: 1126px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#python_javascript___typescript_html___css___sql_php_c___c___solidity {
+	top: 204px;
+	left: 83px;
+	width: 261.5px;
+	height: 149.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#azure___aws_mongodb___postgresql_netlify___heroku_socket_io_blockchain_django___flask_jira {
+	top: 438px;
+	left: 84px;
+	width: 261.5px;
+	height: 180.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#humility_teamwork_leadership_self_starter {
+	top: 724px;
+	left: 83px;
+	width: 111.5px;
+	height: 99.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#line_5 {
+	top: 367.5px;
+	left: 82.5px;
+	width: 217px;
+	height: 0px;
+}
+
+
+#location {
+	top: 239px;
+	left: 385px;
+	width: 31px;
+	height: 30px;
+}
+
+
+#smartphone {
+	top: 241px;
+	left: 648px;
+	width: 29px;
+	height: 29px;
+}
+
+
+#email {
+	top: 241px;
+	left: 923px;
+	width: 31px;
+	height: 32px;
+}
+
+
+#smile {
+	top: 692px;
+	left: 1105px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#share_ek1 {
+	top: 646px;
+	left: 1027px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#comente {
+	top: 646px;
+	left: 710px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#like_ek1 {
+	top: 645px;
+	left: 445px;
+	width: 24px;
+	height: 23px;
+}
+
+
+#rectangle_15 {
+	top: 1009px;
+	left: 441px;
+	width: 702px;
+	height: 37px;
+}
+
+
+#intersection_4_ek1 {
+	top: 1061px;
+	left: 397px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#line_9 {
+	top: 960px;
+	left: 397.5px;
+	width: 755px;
+	height: 0px;
+}
+
+
+#line_10 {
+	top: 996px;
+	left: 398px;
+	width: 755px;
+	height: 0px;
+}
+
+
+#write_a_coment____ek1 {
+	top: 1017px;
+	left: 458px;
+	width: 159px;
+	height: 34px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 18px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#like_ek2 {
+	top: 967.5px;
+	left: 482.5px;
+	width: 48.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#like_ek3 {
+	top: 1359px;
+	left: 480px;
+	width: 48.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#comment {
+	top: 967.5px;
+	left: 746.5px;
+	width: 86.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#comment_ek1 {
+	top: 1359px;
+	left: 744px;
+	width: 86.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#share_ek2 {
+	top: 967.5px;
+	left: 1063.5px;
+	width: 61.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#share_ek3 {
+	top: 1359px;
+	left: 1061px;
+	width: 61.5px;
+	height: 27.5px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 15px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#smile_ek1 {
+	top: 1068px;
+	left: 1105px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#share_ek4 {
+	top: 1022px;
+	left: 1033px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#comente_ek1 {
+	top: 1022px;
+	left: 716px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#like_ek4 {
+	top: 1021px;
+	left: 451px;
+	width: 24px;
+	height: 23px;
+}
+
+
+#rectangle_16 {
+	top: 1396px;
+	left: 439px;
+	width: 702px;
+	height: 37px;
+}
+
+
+#intersection_4_ek2 {
+	top: 1439px;
+	left: 393px;
+	width: 38px;
+	height: 38px;
+}
+
+
+#line_11 {
+	top: 1351.5px;
+	left: 392px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#line_12 {
+	top: 1384px;
+	left: 392px;
+	width: 749px;
+	height: 0px;
+}
+
+
+#write_a_coment____ek2 {
+	top: 1404px;
+	left: 456px;
+	width: 159px;
+	height: 34px;
+	overflow: hidden;
+	font-family: Arial;
+	font-size: 18px;
+	text-align: left;
+	color:#636468;
+}
+
+
+#smile_ek2 {
+	top: 1446px;
+	left: 1102px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#share_ek5 {
+	top: 1400px;
+	left: 1024px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#comente_ek2 {
+	top: 1400px;
+	left: 707px;
+	width: 1px;
+	height: 1px;
+}
+
+
+#like_ek5 {
+	top: 1399px;
+	left: 442px;
+	width: 24px;
+	height: 23px;
+}
+
+
+#image_2 {
+	top: 237px;
+	left: 383px;
+	width: 38px;
+	height: 37px;
+}
+
+
+#comente_1 {
+	top: 302.5px;
+	left: 2113px;
+	width: 23px;
+	height: 23px;
+}
+
+
+#share_1 {
+	top: 300px;
+	left: 2432px;
+	width: 23px;
+	height: 23px;
+}
+
+
+#comente_1_ek1 {
+	top: 673.5px;
+	left: 2119.5px;
+	width: 23px;
+	height: 23px;
+}
+
+
+#comente_1_ek2 {
+	top: 1065px;
+	left: 2117px;
+	width: 23px;
+	height: 23px;
+}
+
+
+#smile_2 {
+	top: 1113px;
+	left: 2512px;
+	width: 20px;
+	height: 20px;
+}
+
+
+#smile_2_ek1 {
+	top: 726px;
+	left: 2511px;
+	width: 20px;
+	height: 20px;
+}
+
+
+#smile_2_ek2 {
+	top: 350px;
+	left: 2513px;
+	width: 20px;
+	height: 20px;
+}
+
+
+#share_1_ek1 {
+	top: 671.5px;
+	left: 2439.5px;
+	width: 23px;
+	height: 23px;
+}
+
+
+#share_1_ek2 {
+	top: 1063px;
+	left: 2437px;
+	width: 23px;
+	height: 23px;
+}
+
+
+
+/* Add your custom CSS here */
