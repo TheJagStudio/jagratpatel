@@ -20,9 +20,23 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <link rel="shortcut icon" type="image/x-icon" href="logo.ico">
         <script defer="defer" src="bundle.edf6d8e8da7c1e40.js"></script> 
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
         <link href="main.css" rel="stylesheet">
     </head>
     <body>
+        <script>
+            window.onloadTurnstileCallback = function () {
+                turnstile.render('#example-container', {
+                    sitekey: '0x4AAAAAAADMg35euur6TIho',
+                    callback: function(token) {
+                        console.log(`Challenge Success ${token}`);
+                    },
+                });
+            };
+
+            // if using synchronous loading, will be called once the DOM is ready
+            turnstile.ready(onloadTurnstileCallback);
+        </script>
         <canvas id="main-canvas"></canvas>
         <div id="intro-container" class="center column">
             <svg id="intro-svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 56 60" height="120" width="120">
