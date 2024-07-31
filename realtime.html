@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stable Diffusion Text to Image</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1 class="text-3xl font-bold mb-6 text-center">Text to Image Generation using Stable Diffusion</h1>
+        <form id="promptForm" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            <label for="prompt" class="block text-lg font-medium text-gray-700">Enter your prompt:</label>
+            <input  type="text" id="prompt" name="prompt" required class="mt-2 p-2 border border-gray-300 rounded-md w-full" />
+        </form>
+        <div id="result" class="max-w-lg mx-auto mt-6 bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Generated Image:</h2>
+            <img id="generatedImage" class="w-full h-auto border border-gray-300 rounded-md" alt="Generated Image will appear here" />
+        </div>
+
+        <script>
+            function getRandomOctet() {
+                return Math.floor(Math.random() * 256);
+            }
+            function randomSeed() {
+                return Math.floor(Math.random() * 999999);
+            }
+            function generateRandomIP() {
+                const octet1 = getRandomOctet();
+                const octet2 = getRandomOctet();
+                const octet3 = getRandomOctet();
+                const octet4 = getRandomOctet();
+                return `${octet1}.${octet2}.${octet3}.${octet4}`;
+            }
+
+            function delay(callback, ms) {
+                var timer = 0;
+                return function () {
+                    var context = this,
+                        args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        callback.apply(context, args);
+                    }, ms || 0);
+                };
+            }
+
+            document.getElementById("prompt").addEventListener("keyup",delay(function (e) {
+                console.log('Time elapsed!', this.value);
+                generateImage(this.value);
+            }, 1000));
+
+            async function generateImage(prompt) {
+                const randomIp = generateRandomIP();
+                const seed = randomSeed();
+                // const prompt = document.getElementById("prompt").value;
+                const response = await fetch("https://proxy.cors.sh/https://getimg.ai/api/pipelines/sdxl-lightning", {
+                    method: "POST",
+                    headers: {
+                        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1.2",
+                        "Content-Type": "application/json",
+                        "x-cors-api-key": "temp_4f366722ffa4bdd63246e0a9227c56e8",
+                        "X-Forwarded-For": randomIp,
+                    },
+                    body: JSON.stringify({
+                        style: "photo",
+                        prompt: prompt,
+                        seed: seed,
+                    }),
+                });
+                const data = await response.json();
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("generatedImage").src = data.url;
+                }
+            }
+        </script>
+    </body>
+</html>
