@@ -7,12 +7,12 @@
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="bg-white md:bg-gray-50 flex md:items-center md:justify-center min-h-screen md:p-4 p-0">
-        <div class="w-full max-w-6xl  mx-auto bg-white p-8 rounded-lg md:shadow-lg">
+        <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
             <h1 class="text-3xl font-extrabold mb-8 text-center text-indigo-700">Text to Image Generation</h1>
             <div id="promptForm" class="space-y-6">
                 <div>
                     <label for="prompt" class="block text-lg font-medium text-gray-900">Enter your prompt:</label>
-                    <input type="text" id="prompt" name="prompt" required class="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" value="a cat eating pizza" id="prompt" name="prompt" required class="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                 </div>
                 <div class="flex gap-3 flex-wrap">
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
@@ -24,7 +24,7 @@
                         <label for="photo" class="-mt-0.5 text-lg font-medium text-gray-900">Photorealism</label>
                     </div>
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
-                        <input type="radio" id="anime" name="style" value="anime"  />
+                        <input type="radio" id="anime" name="style" value="anime" />
                         <label for="anime" class="-mt-0.5 text-lg font-medium text-gray-900">Anime</label>
                     </div>
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
@@ -34,6 +34,11 @@
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
                         <input type="radio" id="sketch" name="style" value="sketch" />
                         <label for="sketch" class="-mt-0.5 text-lg font-medium text-gray-900">Sketch</label>
+                    </div>
+                    <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
+                        <input type="checkbox" id="realtime" name="realtime" value="" class="sr-only peer" />
+                        <div for="realtime" id="realtimeToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                        <label for="realtime" class="-mt-0.5 text-lg font-medium text-gray-900">Realtime</label>
                     </div>
                 </div>
             </div>
@@ -49,6 +54,32 @@
         </div>
 
         <script>
+            let starter = 0;
+            let realtime = 0;
+            document.getElementById("realtime").addEventListener("change", function () {
+                if (this.checked) {
+                    realtime = 1;
+                    generateImage(1);
+                    generateImage(2);
+                    generateImage(3);
+                    generateImage(4);
+                } else {
+                    realtime = 0;
+                }
+            });
+            document.getElementById("realtimeToggle").addEventListener("click", function () {
+                if (document.getElementById("realtime").checked) {
+                    document.getElementById("realtime").checked = false;
+                    realtime = 0;
+                } else {
+                    document.getElementById("realtime").checked = true;
+                    realtime = 1;
+                    generateImage(1);
+                    generateImage(2);
+                    generateImage(3);
+                    generateImage(4);
+                }
+            });
             function getRandomOctet() {
                 return Math.floor(Math.random() * 256);
             }
@@ -81,11 +112,14 @@
                     if (this.value === "") {
                         alert("Please enter a prompt");
                         return;
-                    } 
-                    generateImage(this.value, 1);
-                    generateImage(this.value, 2);
-                    generateImage(this.value, 3);
-                    generateImage(this.value, 4);
+                    }
+                    if (starter === 0 || realtime === 0) {
+                        generateImage(1);
+                        generateImage(2);
+                        generateImage(3);
+                        generateImage(4);
+                        starter = 1;
+                    }
                 }, 1000)
             );
 
@@ -94,16 +128,24 @@
                     if (document.getElementById("prompt").value === "") {
                         alert("Please enter a prompt");
                         return;
-                    } 
-                    generateImage(document.getElementById("prompt").value, 1);
-                    generateImage(document.getElementById("prompt").value, 2);
-                    generateImage(document.getElementById("prompt").value, 3);
-                    generateImage(document.getElementById("prompt").value, 4);
+                    }
+                    if (starter === 0 || realtime === 0) {
+                        generateImage(1);
+                        generateImage(2);
+                        generateImage(3);
+                        generateImage(4);
+                        starter = 1;
+                    }
                 });
             });
 
-            async function generateImage(prompt, num) {
-                document.getElementById("generatedImage" + num).classList.add("animate-pulse");
+            async function generateImage(num) {
+                let prompt = document.getElementById("prompt").value;
+                if (prompt === "") {
+                    starter = 0;
+                    return;
+                }
+                // document.getElementById("generatedImage" + num).classList.add("animate-pulse");
                 const randomIp = generateRandomIP();
                 const seed = randomSeed();
                 let style = "";
@@ -115,7 +157,7 @@
                     style = "3d-toon";
                 } else if (document.getElementById("sketch").checked) {
                     style = "sketch";
-                }else {
+                } else {
                     style = "";
                 }
                 let body = {};
@@ -124,20 +166,18 @@
                         prompt: prompt,
                         seed: seed,
                     };
-                }
-                else{
+                } else {
                     body = {
                         style: style,
                         prompt: prompt,
                         seed: seed,
                     };
                 }
-                const response = await fetch("https://proxy.cors.sh/https://getimg.ai/api/pipelines/sdxl-lightning", {
+                const response = await fetch("https://thejagstudio-corsanywhere" + num + ".hf.space/https://getimg.ai/api/pipelines/sdxl-lightning", {
                     method: "POST",
                     headers: {
                         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1.2",
                         "Content-Type": "application/json",
-                        "x-cors-api-key": "temp_4f366722ffa4bdd63246e0a9227c56e8",
                         "X-Forwarded-For": randomIp,
                     },
                     body: JSON.stringify(body),
@@ -148,7 +188,10 @@
                 } else {
                     document.getElementById("generatedImage" + num).src = data.url;
                 }
-                document.getElementById("generatedImage" + num).classList.remove("animate-pulse");
+                // document.getElementById("generatedImage" + num).classList.remove("animate-pulse");
+                if (realtime === 1) {
+                    generateImage(num);
+                }
             }
         </script>
     </body>
