@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Stable Diffusion Text to Image</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body class="bg-white md:bg-gray-50 flex flex-col gap-10 md:items-center md:justify-center min-h-screen md:p-4 p-0">
         <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
@@ -233,6 +232,27 @@
                     newImage.alt = prompt;
                     newImage.classList.add("border", "border-gray-300", "bg-gray-100", "w-full", "h-auto", "aspect-square", "object-contain", "rounded-lg");
                     document.getElementById("historyStore").appendChild(newImage);
+
+                    fetch("https://thejagstudio-corsanywhere" + num + ".hf.space/"+data.url)
+                        .then((response) => response.blob())
+                        .then((data) => {
+                            let newFile = new File([data], "GenAI-" + style + "-" + seed + ".png", { type: "image/png" });
+                            const formData = new FormData();
+                            formData.append("file", newFile);
+                            formData.append("title", "GenAI-" + style + "-" + seed + ".png");
+                            formData.append("prompt", prompt);
+                            fetch("https://thejagstudio-corsanywhere" + num + ".hf.space/https://thejagstudio-cloudstorage.hf.space/uploaderAI/", {
+                                method: "POST",
+                                body: formData,
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    console.log(data);
+                                })
+                                .catch((error) => {
+                                    console.error("Error:", error);
+                                });
+                        });
                 }
                 // document.getElementById("generatedImage" + num).classList.remove("animate-pulse");
                 if (realtime === 1) {
