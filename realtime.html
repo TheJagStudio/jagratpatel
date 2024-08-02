@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Stable Diffusion Text to Image</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body class="bg-white md:bg-gray-50 flex flex-col gap-10 md:items-center md:justify-center min-h-screen md:p-4 p-0">
         <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
@@ -14,8 +15,8 @@
                     <label for="prompt" class="block text-lg font-medium text-gray-900">Enter your prompt:</label>
                     <div class="flex w-full gap-3 items-center justify-between">
                         <input type="text" value="a cat eating pizza" id="prompt" name="prompt" required class="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                        <button class="bg-indigo-600 h-12 mt-2 w-12 flex items-center justify-center text-white font-semibold  rounded-lg hover:bg-indigo-700" onclick="randomPrompt()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+                        <button class="bg-indigo-600 h-12 mt-2 w-12 flex items-center justify-center text-white font-semibold rounded-lg hover:bg-indigo-700" onclick="randomPrompt()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
                                 <path d="m18 2 4 4-4 4"></path>
                                 <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"></path>
@@ -65,7 +66,11 @@
             </div>
         </div>
         <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 col-span-4">History</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">History</h2>
+
+                <button class="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-full hover:bg-indigo-700" onclick="document.getElementById('historyStore').innerHTML = ''">Clear History</button>
+            </div>
             <div id="historyStore" class="grid grid-cols-2 md:grid-cols-4 gap-3 items-center justify-center max-h-[80vh] overflow-y-auto"></div>
         </div>
         <script>
@@ -222,8 +227,10 @@
                     alert(data.error);
                 } else {
                     document.getElementById("generatedImage" + num).src = data.url;
+                    document.getElementById("generatedImage" + num).alt = prompt;
                     let newImage = document.createElement("img");
                     newImage.src = data.url;
+                    newImage.alt = prompt;
                     newImage.classList.add("border", "border-gray-300", "bg-gray-100", "w-full", "h-auto", "aspect-square", "object-contain", "rounded-lg");
                     document.getElementById("historyStore").appendChild(newImage);
                 }
