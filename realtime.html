@@ -6,7 +6,7 @@
         <title>Stable Diffusion Text to Image</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
-    <body class="bg-white md:bg-gray-50 flex md:items-center md:justify-center min-h-screen md:p-4 p-0">
+    <body class="bg-white md:bg-gray-50 flex flex-col gap-10 md:items-center md:justify-center min-h-screen md:p-4 p-0">
         <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
             <h1 class="text-3xl font-extrabold mb-8 text-center text-indigo-700">Text to Image Generation</h1>
             <div id="promptForm" class="space-y-6">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
                         <input type="checkbox" id="realtime" name="realtime" value="" class="sr-only peer" />
-                        <div for="realtime" id="realtimeToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                        <div for="realtime" id="realtimeToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
                         <label for="realtime" class="-mt-0.5 text-lg font-medium text-gray-900">Realtime</label>
                     </div>
                 </div>
@@ -45,14 +45,19 @@
             <div id="result" class="mt-8">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Generated Image:</h2>
                 <div class="w-full h-fit grid grid-cols-2 md:grid-cols-4 gap-3 items-center justify-center">
-                    <img id="generatedImage1" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image will appear here" />
-                    <img id="generatedImage2" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image will appear here" />
-                    <img id="generatedImage3" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image will appear here" />
-                    <img id="generatedImage4" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image will appear here" />
+                    <img id="generatedImage1" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image 1 will appear here" />
+                    <img id="generatedImage2" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image 2 will appear here" />
+                    <img id="generatedImage3" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image 3 will appear here" />
+                    <img id="generatedImage4" src="https://placehold.co/600x600/d1d5db/d1d5db" class="border border-gray-300 bg-gray-100 w-full h-auto aspect-square object-contain rounded-lg" alt="Generated Image 4 will appear here" />
                 </div>
             </div>
         </div>
+        <div  class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 col-span-4">History</h2>
+            <div id="historyStore" class="grid grid-cols-2 md:grid-cols-4 gap-3 items-center justify-center max-h-[80vh] overflow-y-auto">
 
+            </div>
+        </div>
         <script>
             let starter = 0;
             let realtime = 0;
@@ -187,6 +192,10 @@
                     alert(data.error);
                 } else {
                     document.getElementById("generatedImage" + num).src = data.url;
+                    let newImage = document.createElement("img");
+                    newImage.src = data.url;
+                    newImage.classList.add("border", "border-gray-300", "bg-gray-100", "w-full", "h-auto", "aspect-square", "object-contain", "rounded-lg");
+                    document.getElementById("historyStore").appendChild(newImage);
                 }
                 // document.getElementById("generatedImage" + num).classList.remove("animate-pulse");
                 if (realtime === 1) {
