@@ -236,10 +236,10 @@
                     fetch("https://thejagstudio-corsanywhere" + num + ".hf.space/"+data.url)
                         .then((response) => response.blob())
                         .then((data) => {
-                            let newFile = new File([data], "GenAI-" + style + "-" + seed + ".png", { type: "image/png" });
+                            let newFile = new File([data],  "GenAI-" + style + "-" + seed +"-"+prompt.slice(0,15)+ ".png", { type: "image/png" });
                             const formData = new FormData();
                             formData.append("file", newFile);
-                            formData.append("title", "GenAI-" + style + "-" + seed + ".png");
+                            formData.append("title", "GenAI-" + style + "-" + seed +"-"+prompt.slice(0,15)+ ".png");
                             formData.append("prompt", prompt);
                             fetch("https://thejagstudio-corsanywhere" + num + ".hf.space/https://thejagstudio-cloudstorage.hf.space/uploaderAI/", {
                                 method: "POST",
