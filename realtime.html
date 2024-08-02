@@ -12,7 +12,18 @@
             <div id="promptForm" class="space-y-6">
                 <div>
                     <label for="prompt" class="block text-lg font-medium text-gray-900">Enter your prompt:</label>
-                    <input type="text" value="a cat eating pizza" id="prompt" name="prompt" required class="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                    <div class="flex w-full gap-3 items-center justify-between">
+                        <input type="text" value="a cat eating pizza" id="prompt" name="prompt" required class="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                        <button class="bg-indigo-600 h-12 mt-2 w-12 flex items-center justify-center text-white font-semibold  rounded-lg hover:bg-indigo-700" onclick="randomPrompt()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+                                <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
+                                <path d="m18 2 4 4-4 4"></path>
+                                <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"></path>
+                                <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"></path>
+                                <path d="m18 14 4 4-4 4"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="flex gap-3 flex-wrap">
                     <div class="flex flex-nowrap items-center justify-center gap-1 whitespace-nowrap">
@@ -40,6 +51,7 @@
                         <div for="realtime" id="realtimeToggle" class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
                         <label for="realtime" class="-mt-0.5 text-lg font-medium text-gray-900">Realtime</label>
                     </div>
+                    <button class="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-full hover:bg-indigo-700" onclick="generateNew()">Generate New</button>
                 </div>
             </div>
             <div id="result" class="mt-8">
@@ -52,11 +64,9 @@
                 </div>
             </div>
         </div>
-        <div  class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
+        <div class="w-full max-w-6xl mx-auto bg-white p-8 rounded-lg md:shadow-lg">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4 col-span-4">History</h2>
-            <div id="historyStore" class="grid grid-cols-2 md:grid-cols-4 gap-3 items-center justify-center max-h-[80vh] overflow-y-auto">
-
-            </div>
+            <div id="historyStore" class="grid grid-cols-2 md:grid-cols-4 gap-3 items-center justify-center max-h-[80vh] overflow-y-auto"></div>
         </div>
         <script>
             let starter = 0;
@@ -98,6 +108,14 @@
                 const octet4 = getRandomOctet();
                 return `${octet1}.${octet2}.${octet3}.${octet4}`;
             }
+            function randomPrompt() {
+                fetch("https://thejagstudio-corsanywhere1.hf.space/https://getimg.ai/api/prompts/random")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        document.getElementById("prompt").value = data.prompt;
+                        generateNew();
+                    });
+            }
 
             function delay(callback, ms) {
                 var timer = 0;
@@ -109,6 +127,18 @@
                         callback.apply(context, args);
                     }, ms || 0);
                 };
+            }
+            function generateNew() {
+                if (document.getElementById("prompt").value === "") {
+                    alert("Please enter a prompt");
+                    return;
+                }
+                if (realtime === 0) {
+                    generateImage(1);
+                    generateImage(2);
+                    generateImage(3);
+                    generateImage(4);
+                }
             }
 
             document.getElementById("prompt").addEventListener(
