@@ -20699,7 +20699,7 @@
             }, {
                 id: 5,
                 name: "InstaBuild",
-                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs. ",
+                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs.",
                 image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
                 tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
                 liveview: "https://instabuild.tech",
