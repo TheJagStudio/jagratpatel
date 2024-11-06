@@ -20644,11 +20644,11 @@
             updatePositions(e = !1) {
                 this.itemsAreMoving && !e || (this.render.items.forEach((e => {
                     const t = this.render.items.indexOf(e);
-                    document.getElementById("work-item-" + e.id).style = this.positionStyles[t + this.currentItemIndex], t + this.currentItemIndex != 4 ? document.getElementById("work-item-" + e.id).classList.add("work-inactive-item-container") : document.getElementById("work-item-" + e.id).classList.remove("work-inactive-item-container")
+                    document.getElementById("work-item-" + e.id).style = this.positionStyles[t + this.currentItemIndex], t + this.currentItemIndex != 8 ? document.getElementById("work-item-" + e.id).classList.add("work-inactive-item-container") : document.getElementById("work-item-" + e.id).classList.remove("work-inactive-item-container")
                 })), this.itemsAreMoving = !0, Ap.delayedCall(.5, (() => this.itemsAreMoving = !1)), this.updateNavigation())
             }
             updateNavigation() {
-                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : 4 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
+                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : 8 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
             }
         }
         const nf = [{
@@ -20745,7 +20745,7 @@
                 Blockchain: '<div class="work-item-tag" style="background: #CA49F8;">Blockchain</div>',
                 Django: '<div class="work-item-tag" style="background: #FFB800;">Django</div>',
                 ViteJs: '<div class="work-item-tag" style="background: #FFB800;">ViteJs</div>',
-                react: '<div class="work-item-tag" style="background: #21BAEB;">ReactJS</div>',
+                ReactJs: '<div class="work-item-tag" style="background: #21BAEB;">ReactJS</div>',
                 webgl: '<div class="work-item-tag" style="background: #5A69EC;">WebGL</div>',
                 api: '<div class="work-item-tag" style="background: #CA49F8;">API</div>',
                 backend: '<div class="work-item-tag" style="background: #8433CC;">Backend</div>'
