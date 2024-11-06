@@ -20601,13 +20601,13 @@
                 backButton: document.getElementById("work-back-button"),
                 nextButton: document.getElementById("work-next-button")
             };
-            currentItemIndex = 5;
+            currentItemIndex = 3;
             itemsAreMoving = !0;
             constructor() {
                 this.experience = new Jf, this.gestures = this.experience.gestures, this.render = this.experience.ui.work.render, this.sounds = this.experience.sounds, this.scroll = this.experience.ui.scroll, this.sizes = this.experience.sizes, this.addButtonEventListeners(), this.initSwipes(), this.updatePositions(!0), this.onArrowClick(), this.sizes.on("portrait", (() => this.onOrientationChange())), this.sizes.on("landscape", (() => this.onOrientationChange()))
             }
             onOrientationChange() {
-                this.currentItemIndex = 5, this.updatePositions()
+                this.currentItemIndex = 3, this.updatePositions()
             }
             addButtonEventListeners() {
                 this.domElements.backButton.addEventListener("click", (() => {
@@ -20699,7 +20699,7 @@
             }, {
                 id: 5,
                 name: "InstaBuild",
-                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs. Users simply provide a detailed prompt describing their vision, and within minutes, a fully functional website preview is ready for review.",
+                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs. ",
                 image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
                 tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
                 liveview: "https://instabuild.tech",
