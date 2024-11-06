@@ -20601,7 +20601,7 @@
                 backButton: document.getElementById("work-back-button"),
                 nextButton: document.getElementById("work-next-button")
             };
-            currentItemIndex = 2;
+            currentItemIndex = 5;
             itemsAreMoving = !0;
             constructor() {
                 this.experience = new Jf, this.gestures = this.experience.gestures, this.render = this.experience.ui.work.render, this.sounds = this.experience.sounds, this.scroll = this.experience.ui.scroll, this.sizes = this.experience.sizes, this.addButtonEventListeners(), this.initSwipes(), this.updatePositions(!0), this.onArrowClick(), this.sizes.on("portrait", (() => this.onOrientationChange())), this.sizes.on("landscape", (() => this.onOrientationChange()))
@@ -20631,7 +20631,7 @@
                 this.isCurrentSwipeElement && ("right" == e ? this.moveForward() : this.moveBack())
             }
             moveBack() {
-                4 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex++, this.updatePositions())
+                8 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex++, this.updatePositions())
             }
             moveForward() {
                 0 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex--, this.updatePositions())
