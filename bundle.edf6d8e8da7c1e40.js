@@ -20696,14 +20696,55 @@
                 liveview: "https://gentle-dawn-5346.on.fleek.co/",
                 github: "https://github.com/TheJagStudio",
                 alt: "JavaScript based Iphone Music Player"
+            }, {
+                id: 5,
+                name: "InstaBuild",
+                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs. Users simply provide a detailed prompt describing their vision, and within minutes, a fully functional website preview is ready for review.",
+                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
+                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
+                liveview: "https://instabuild.tech",
+                github: "https://github.com/TheJagStudio/InstaBuild",
+                alt: "AI APP Gen"
+            },
+            {
+                id: 6,
+                name: "LawGPT",
+                description: "A user-friendly AI-powered chatbot for legal assistance",
+                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/664/419/datas/gallery.jpg",
+                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
+                liveview: "https://www.youtube.com/watch?v=on_7pH2jfco",
+                github: "https://github.com/TheJagStudio/LawGPT.git",
+                alt: "LawGPT"
+            },
+            {
+                id: 7,
+                name: "AbsoluteAI",
+                description: "Revolutionize data extraction with AbsoluteAI: Harnessing the power of Large Language Models for unparalleled web scraping capabilities.",
+                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/886/852/datas/gallery.jpg",
+                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
+                liveview: "https://www.youtube.com/watch?v=Rp1pnpGexOA",
+                github: "https://github.com/TheJagStudio/AbsoluteAI",
+                alt: "AbsoluteAI"
+            },
+            {
+                id: 8,
+                name: "Müsica",
+                description: "Make your own Music with a click.",
+                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/051/240/datas/gallery.jpg",
+                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
+                liveview: "https://www.youtube.com/watch?v=crC5xM3vH94",
+                github: "https://github.com/TheJagStudio/Musica",
+                alt: "Müsica"
             }],
             rf = {
                 html: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">HTML</div>',
                 css: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">CSS</div>',
-                Python: '<div class="work-item-tag" style="background: #CA49F8;">Python</div>',
+                TailwindCSS: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">TailwindCSS</div>',
+                Python: '<div class="work-item-tag" style="background: #FFB800;">Python</div>',
                 javascript: '<div class="work-item-tag" style="background: #FFB800;">JavaScript</div>',
                 Blockchain: '<div class="work-item-tag" style="background: #CA49F8;">Blockchain</div>',
                 Django: '<div class="work-item-tag" style="background: #FFB800;">Django</div>',
+                ViteJs: '<div class="work-item-tag" style="background: #FFB800;">ViteJs</div>',
                 react: '<div class="work-item-tag" style="background: #21BAEB;">ReactJS</div>',
                 webgl: '<div class="work-item-tag" style="background: #5A69EC;">WebGL</div>',
                 api: '<div class="work-item-tag" style="background: #CA49F8;">API</div>',
@@ -20748,20 +20789,20 @@
             }
         }
         const af = [{
-            name: "WebGL",
-            width: "60%"
-        }, {
-            name: "Data Science",
-            width: "50%"
-        }, {
-            name: "HTML + CSS + JavaScript",
-            width: "85%"
-        }, {
-            name: "Python",
+            name: "NLP + LLM",
             width: "90%"
         }, {
-            name: "3D Modelling",
-            width: "60%"
+            name: "DL + ML",
+            width: "85%"
+        }, {
+            name: "HTML + CSS + JavaScript",
+            width: "100%"
+        }, {
+            name: "Python",
+            width: "100%"
+        }, {
+            name: "Computer Vision",
+            width: "95%"
         }];
         class of {
             domElements = {
