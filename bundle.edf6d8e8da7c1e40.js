@@ -20607,7 +20607,7 @@
                 this.experience = new Jf, this.gestures = this.experience.gestures, this.render = this.experience.ui.work.render, this.sounds = this.experience.sounds, this.scroll = this.experience.ui.scroll, this.sizes = this.experience.sizes, this.addButtonEventListeners(), this.initSwipes(), this.updatePositions(!0), this.onArrowClick(), this.sizes.on("portrait", (() => this.onOrientationChange())), this.sizes.on("landscape", (() => this.onOrientationChange()))
             }
             onOrientationChange() {
-                this.currentItemIndex = 2, this.updatePositions()
+                this.currentItemIndex = 5, this.updatePositions()
             }
             addButtonEventListeners() {
                 this.domElements.backButton.addEventListener("click", (() => {
