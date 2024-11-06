@@ -20595,19 +20595,19 @@
             }
         }
         class tf {
-            positionStyles = ["transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ", "transform: translateX(0%);", "transform: translateX(110%) scale(0.9);", "transform: translateX(210%) scale(0.9)", "transform: translateX(310%) scale(0.9);", "transform: translateX(410%) scale(0.9);"];
+            positionStyles = ["transform: translateX(-1010%) scale(0.9);","transform: translateX(-910%) scale(0.9);","transform: translateX(-810%) scale(0.9);","transform: translateX(-710%) scale(0.9);","transform: translateX(-610%) scale(0.9);","transform: translateX(-510%) scale(0.9);","transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ", "transform: translateX(0%);", "transform: translateX(110%) scale(0.9);", "transform: translateX(210%) scale(0.9)", "transform: translateX(310%) scale(0.9);", "transform: translateX(410%) scale(0.9);", "transform: translateX(510%) scale(0.9);", "transform: translateX(610%) scale(0.9);", "transform: translateX(710%) scale(0.9);", "transform: translateX(810%) scale(0.9);", "transform: translateX(910%) scale(0.9);", "transform: translateX(1010%) scale(0.9);"];
             domElements = {
                 section: document.getElementById("work-section"),
                 backButton: document.getElementById("work-back-button"),
                 nextButton: document.getElementById("work-next-button")
             };
-            currentItemIndex = 5;
+            currentItemIndex = 2;
             itemsAreMoving = !0;
             constructor() {
                 this.experience = new Jf, this.gestures = this.experience.gestures, this.render = this.experience.ui.work.render, this.sounds = this.experience.sounds, this.scroll = this.experience.ui.scroll, this.sizes = this.experience.sizes, this.addButtonEventListeners(), this.initSwipes(), this.updatePositions(!0), this.onArrowClick(), this.sizes.on("portrait", (() => this.onOrientationChange())), this.sizes.on("landscape", (() => this.onOrientationChange()))
             }
             onOrientationChange() {
-                this.currentItemIndex = 5, this.updatePositions()
+                this.currentItemIndex = 2, this.updatePositions()
             }
             addButtonEventListeners() {
                 this.domElements.backButton.addEventListener("click", (() => {
