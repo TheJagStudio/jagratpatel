@@ -6441,7 +6441,8 @@
                     if (t && t.isTexture && !1 === t.isRenderTargetTexture) {
                         const n = t.mapping;
                         if (303 === n || 304 === n) {
-                            if (i.has(t)) return r(i.get(t).texture, t.mapping); {
+                            if (i.has(t)) return r(i.get(t).texture, t.mapping);
+                            {
                                 const n = t.image;
                                 if (n && n.height > 0) {
                                     const a = new Di(n.height / 2);
@@ -6877,7 +6878,8 @@
                                 let t = i.get(a);
                                 return null === r && (r = new ln(e)), t = l ? r.fromEquirectangular(a, t) : r.fromCubemap(a, t), i.set(a, t), t.texture
                             }
-                            if (i.has(a)) return i.get(a).texture; {
+                            if (i.has(a)) return i.get(a).texture;
+                            {
                                 const t = a.image;
                                 if (l && t && t.height > 0 || c && t && function(e) {
                                         let t = 0;
@@ -7941,7 +7943,8 @@
                         T = v[a.type],
                         E = y.isSkinnedMesh ? function(e) {
                             const t = e.skeleton.bones;
-                            if (p) return 1024; {
+                            if (p) return 1024;
+                            {
                                 const e = m,
                                     i = Math.floor((e - 20) / 4),
                                     n = Math.min(i, t.length);
@@ -12646,7 +12649,8 @@
                                 }
                                 s = t.length;
                                 break i
-                            }if (e >= r) break e; {
+                            }if (e >= r) break e;
+                            {
                                 const a = t[1];
                                 e < a && (i = 2, r = a);
                                 for (let s = i - 2;;) {
@@ -12661,8 +12665,11 @@
                             const n = i + s >>> 1;
                             e < t[n] ? s = n : i = n + 1
                         }
-                        if (n = t[i], r = t[i - 1], void 0 === r) return this._cachedIndex = 0, this.beforeStart_(0, e, n);
-                        if (void 0 === n) return i = t.length, this._cachedIndex = i, this.afterEnd_(i - 1, r, e)
+                        if (n = t[i], r = t[i - 1], void 0 === r) return this._cachedIndex = 0,
+                        this.beforeStart_(0, e, n);
+                        if (void 0 === n) return i = t.length,
+                        this._cachedIndex = i,
+                        this.afterEnd_(i - 1, r, e)
                     }
                     this._cachedIndex = i,
                     this.intervalChanged_(i, r, n)
@@ -13290,7 +13297,8 @@
                         case "json":
                             return e.json();
                         default:
-                            if (void 0 === a) return e.text(); {
+                            if (void 0 === a) return e.text();
+                            {
                                 const t = /charset="?([^;"\s]*)"?/i.exec(a),
                                     i = t && t[1] ? t[1].toLowerCase() : void 0,
                                     n = new TextDecoder(i);
@@ -16022,7 +16030,7 @@
                         center: .5,
                         edges: .5,
                         end: 1
-                    }[n] || 0 : !a && o && (c = n[0], h = n[1]),
+                    } [n] || 0 : !a && o && (c = n[0], h = n[1]),
                     function(e, a, u) {
                         var d, p, m, f, g, v, _, y, x, b = (u || t).length,
                             w = s[b];
@@ -20005,7 +20013,8 @@
                 function(e, t, i) {
                     const n = t.attributes,
                         r = new Re;
-                    if (void 0 === n.POSITION) return; {
+                    if (void 0 === n.POSITION) return;
+                    {
                         const e = i.json.accessors[n.POSITION],
                             t = e.min,
                             s = e.max;
@@ -20595,7 +20604,7 @@
             }
         }
         class tf {
-            positionStyles = ["transform: translateX(-1010%) scale(0.9);","transform: translateX(-910%) scale(0.9);","transform: translateX(-810%) scale(0.9);","transform: translateX(-710%) scale(0.9);","transform: translateX(-610%) scale(0.9);","transform: translateX(-510%) scale(0.9);","transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ", "transform: translateX(0%);", "transform: translateX(110%) scale(0.9);", "transform: translateX(210%) scale(0.9)", "transform: translateX(310%) scale(0.9);", "transform: translateX(410%) scale(0.9);", "transform: translateX(510%) scale(0.9);", "transform: translateX(610%) scale(0.9);", "transform: translateX(710%) scale(0.9);", "transform: translateX(810%) scale(0.9);"];
+            positionStyles = ["transform: translateX(-1010%) scale(0.9);", "transform: translateX(-910%) scale(0.9);", "transform: translateX(-810%) scale(0.9);", "transform: translateX(-710%) scale(0.9);", "transform: translateX(-610%) scale(0.9);", "transform: translateX(-510%) scale(0.9);", "transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ", "transform: translateX(0%);", "transform: translateX(110%) scale(0.9);", "transform: translateX(210%) scale(0.9)", "transform: translateX(310%) scale(0.9);", "transform: translateX(410%) scale(0.9);", "transform: translateX(510%) scale(0.9);", "transform: translateX(610%) scale(0.9);", "transform: translateX(710%) scale(0.9);", "transform: translateX(810%) scale(0.9);"];
             domElements = {
                 section: document.getElementById("work-section"),
                 backButton: document.getElementById("work-back-button"),
@@ -20652,104 +20661,159 @@
             }
         }
         const nf = [{
-                id: 0,
-                name: "Cloud Storage",
-                description: "A free open source decentralized storage system for everyone.",
-                image: "images/projects/cloudStorage.jpg",
-                tags: ["Django","javascript","Python","Blockchain","api", "html", "css"],
-                liveview: "#",
-                github: "https://github.com/TheJagStudio",
-                alt: "A free open source decentralized storage system for everyone."
-            }, {
-                id: 1,
-                name: "Food Compare",
-                description: "This app compares food prices from Swiggy and Zomato.",
-                image: "images/projects/foodCompare.jpg",
-                tags: ["javascript", "Django", "html", "css"],
-                liveview: "#",
-                github: "https://github.com/TheJagStudio",
-                alt: "This app compares food prices from Swiggy and Zomato."
-            }, {
-                id: 2,
-                name: "Youtube Clone",
-                description: "JavaScript based Youtube Clone",
-                image: "images/projects/youtubeClone.png",
-                tags: ["javascript", "html", "css"],
-                liveview: "https://wandering-sound-4807.on.fleek.co/",
-                github: "https://github.com/TheJagStudio",
-                alt: "JavaScript based Youtube Clone"
-            }, {
-                id: 3,
-                name: "Spotify Clone",
-                description: "JavaScript based Spotify Clone",
-                image: "images/projects/spotifyClone.png",
-                tags: ["javascript", "html", "css"],
-                liveview: "https://gentle-dawn-5346.on.fleek.co/",
-                github: "https://github.com/TheJagStudio",
-                alt: "JavaScript based Spotify Clone"
-            }, {
-                id: 4,
-                name: "Iphone Music Player",
-                description: "JavaScript based Iphone Music Player",
-                image: "images/projects/spotifyIphone.png",
-                tags: ["javascript", "html", "css"],
-                liveview: "https://gentle-dawn-5346.on.fleek.co/",
-                github: "https://github.com/TheJagStudio",
-                alt: "JavaScript based Iphone Music Player"
-            }, {
-                id: 5,
-                name: "InstaBuild",
-                description: "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs.",
-                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
-                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
-                liveview: "https://instabuild.tech",
-                github: "https://github.com/TheJagStudio/InstaBuild",
-                alt: "AI APP Gen"
+                "id": 0,
+                "name": "Cloud Storage",
+                "description": "A free open source decentralized storage system for everyone.",
+                "image": "images/projects/cloudStorage.jpg",
+                "tags": [
+                    "Django",
+                    "javascript",
+                    "Python",
+                    "Blockchain",
+                    "api",
+                    "html",
+                    "css"
+                ],
+                "liveview": "#",
+                "github": "https://github.com/TheJagStudio",
+                "alt": "A free open source decentralized storage system for everyone."
             },
             {
-                id: 6,
-                name: "LawGPT",
-                description: "A user-friendly AI-powered chatbot for legal assistance",
-                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/664/419/datas/gallery.jpg",
-                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
-                liveview: "https://www.youtube.com/watch?v=on_7pH2jfco",
-                github: "https://github.com/TheJagStudio/LawGPT.git",
-                alt: "LawGPT"
+                "id": 1,
+                "name": "Food Compare",
+                "description": "This app compares food prices from Swiggy and Zomato.",
+                "image": "images/projects/foodCompare.jpg",
+                "tags": [
+                    "javascript",
+                    "Django",
+                    "html",
+                    "css"
+                ],
+                "liveview": "#",
+                "github": "https://github.com/TheJagStudio",
+                "alt": "This app compares food prices from Swiggy and Zomato."
             },
             {
-                id: 7,
-                name: "AbsoluteAI",
-                description: "Revolutionize data extraction with AbsoluteAI: Harnessing the power of Large Language Models for unparalleled web scraping capabilities.",
-                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/886/852/datas/gallery.jpg",
-                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
-                liveview: "https://www.youtube.com/watch?v=Rp1pnpGexOA",
-                github: "https://github.com/TheJagStudio/AbsoluteAI",
-                alt: "AbsoluteAI"
+                "id": 2,
+                "name": "Youtube Clone",
+                "description": "JavaScript based Youtube Clone",
+                "image": "images/projects/youtubeClone.png",
+                "tags": [
+                    "javascript",
+                    "html",
+                    "css"
+                ],
+                "liveview": "https://wandering-sound-4807.on.fleek.co/",
+                "github": "https://github.com/TheJagStudio",
+                "alt": "JavaScript based Youtube Clone"
             },
             {
-                id: 8,
-                name: "Müsica",
-                description: "Make your own Music with a click.",
-                image: "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/051/240/datas/gallery.jpg",
-                tags: ["ViteJs", "ReactJs", "TailwindCSS","Django","Python"],
-                liveview: "https://www.youtube.com/watch?v=crC5xM3vH94",
-                github: "https://github.com/TheJagStudio/Musica",
-                alt: "Müsica"
-            }],
-            rf = {
-                html: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">HTML</div>',
-                css: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">CSS</div>',
-                TailwindCSS: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">TailwindCSS</div>',
-                Python: '<div class="work-item-tag" style="background: #FFB800;">Python</div>',
-                javascript: '<div class="work-item-tag" style="background: #FFB800;">JavaScript</div>',
-                Blockchain: '<div class="work-item-tag" style="background: #CA49F8;">Blockchain</div>',
-                Django: '<div class="work-item-tag" style="background: #FFB800;">Django</div>',
-                ViteJs: '<div class="work-item-tag" style="background: #FFB800;">ViteJs</div>',
-                ReactJs: '<div class="work-item-tag" style="background: #21BAEB;">ReactJS</div>',
-                webgl: '<div class="work-item-tag" style="background: #5A69EC;">WebGL</div>',
-                api: '<div class="work-item-tag" style="background: #CA49F8;">API</div>',
-                backend: '<div class="work-item-tag" style="background: #8433CC;">Backend</div>'
-            };
+                "id": 3,
+                "name": "Spotify Clone",
+                "description": "JavaScript based Spotify Clone",
+                "image": "images/projects/spotifyClone.png",
+                "tags": [
+                    "javascript",
+                    "html",
+                    "css"
+                ],
+                "liveview": "https://gentle-dawn-5346.on.fleek.co/",
+                "github": "https://github.com/TheJagStudio",
+                "alt": "JavaScript based Spotify Clone"
+            },
+            {
+                "id": 4,
+                "name": "Iphone Music Player",
+                "description": "JavaScript based Iphone Music Player",
+                "image": "images/projects/spotifyIphone.png",
+                "tags": [
+                    "javascript",
+                    "html",
+                    "css"
+                ],
+                "liveview": "https://gentle-dawn-5346.on.fleek.co/",
+                "github": "https://github.com/TheJagStudio",
+                "alt": "JavaScript based Iphone Music Player"
+            },
+            {
+                "id": 5,
+                "name": "InstaBuild",
+                "description": "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs.",
+                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
+                "tags": [
+                    "ViteJs",
+                    "ReactJs",
+                    "TailwindCSS",
+                    "Django",
+                    "Python"
+                ],
+                "liveview": "https://instabuild.tech",
+                "github": "https://github.com/TheJagStudio/InstaBuild",
+                "alt": "AI APP Gen"
+            },
+            {
+                "id": 6,
+                "name": "LawGPT",
+                "description": "A user-friendly AI-powered chatbot for legal assistance",
+                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/664/419/datas/gallery.jpg",
+                "tags": [
+                    "ViteJs",
+                    "ReactJs",
+                    "TailwindCSS",
+                    "Django",
+                    "Python"
+                ],
+                "liveview": "https://www.youtube.com/watch?v=on_7pH2jfco",
+                "github": "https://github.com/TheJagStudio/LawGPT.git",
+                "alt": "LawGPT"
+            },
+            {
+                "id": 7,
+                "name": "AbsoluteAI",
+                "description": "Revolutionize data extraction with AbsoluteAI: Harnessing the power of Large Language Models for unparalleled web scraping capabilities.",
+                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/886/852/datas/gallery.jpg",
+                "tags": [
+                    "ViteJs",
+                    "ReactJs",
+                    "TailwindCSS",
+                    "Django",
+                    "Python"
+                ],
+                "liveview": "https://www.youtube.com/watch?v=Rp1pnpGexOA",
+                "github": "https://github.com/TheJagStudio/AbsoluteAI",
+                "alt": "AbsoluteAI"
+            },
+            {
+                "id": 8,
+                "name": "Müsica",
+                "description": "Make your own Music with a click.",
+                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/051/240/datas/gallery.jpg",
+                "tags": [
+                    "ViteJs",
+                    "ReactJs",
+                    "TailwindCSS",
+                    "Django",
+                    "Python"
+                ],
+                "liveview": "https://www.youtube.com/watch?v=crC5xM3vH94",
+                "github": "https://github.com/TheJagStudio/Musica",
+                "alt": "Müsica"
+            }
+        ];
+        const rf = {
+            html: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">HTML</div>',
+            css: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">CSS</div>',
+            TailwindCSS: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">TailwindCSS</div>',
+            Python: '<div class="work-item-tag" style="background: #FFB800;">Python</div>',
+            javascript: '<div class="work-item-tag" style="background: #FFB800;">JavaScript</div>',
+            Blockchain: '<div class="work-item-tag" style="background: #CA49F8;">Blockchain</div>',
+            Django: '<div class="work-item-tag" style="background: #FFB800;">Django</div>',
+            ViteJs: '<div class="work-item-tag" style="background: #FFB800;">ViteJs</div>',
+            ReactJs: '<div class="work-item-tag" style="background: #21BAEB;">ReactJS</div>',
+            webgl: '<div class="work-item-tag" style="background: #5A69EC;">WebGL</div>',
+            api: '<div class="work-item-tag" style="background: #CA49F8;">API</div>',
+            backend: '<div class="work-item-tag" style="background: #8433CC;">Backend</div>'
+        };
         class sf {
             domElements = {
                 renderContainer: document.getElementById("work-render-container")
@@ -20807,7 +20871,8 @@
         class of {
             domElements = {
                 skillsRenderContainer: document.getElementById("about-skills-render-container")
-            };constructor() {
+            };
+            constructor() {
                 this.skills = af, this.renderSkills()
             }
             renderSkills() {
@@ -21978,7 +22043,7 @@
         class wf {
             constructor() {
                 this.experience = new Jf, this.resources = this.experience.resources, this.world = this.experience.world, this.sizes = this.experience.sizes, this.resources.on("ready", (() => {
-                    this.transition = new ef, this.scrollIcon = new uf(0), this.scrollScrollIcon = new uf(1), this.landingPage = new Qm, this.scroll = new $m, this.sections = new gf, this.soundButton = new df, this.menu = {}, this.menu.main = new hf, this.menu.items = new ff, this.about = {}, this.about.render = new of , this.about.animations = new mf, this.about.scrollLines = new bf, this.work = {}, this.work.render = new sf, this.work.cards = new tf, this.work.scrollEvents = new xf, this.contact = {}, this.contact.form = new vf, this.contact.animationEvents = new _f, this.header = new cf, this.hoverIcon = new lf
+                    this.transition = new ef, this.scrollIcon = new uf(0), this.scrollScrollIcon = new uf(1), this.landingPage = new Qm, this.scroll = new $m, this.sections = new gf, this.soundButton = new df, this.menu = {}, this.menu.main = new hf, this.menu.items = new ff, this.about = {}, this.about.render = new of, this.about.animations = new mf, this.about.scrollLines = new bf, this.work = {}, this.work.render = new sf, this.work.cards = new tf, this.work.scrollEvents = new xf, this.contact = {}, this.contact.form = new vf, this.contact.animationEvents = new _f, this.header = new cf, this.hoverIcon = new lf
                 })), this.intro = new yf
             }
             resize() {
