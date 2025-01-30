@@ -20604,7 +20604,7 @@
             }
         }
         class tf {
-            positionStyles = [ "transform: translateX(0%);", "transform: translateX(110%) scale(0.9);", "transform: translateX(210%) scale(0.9)", "transform: translateX(310%) scale(0.9);", "transform: translateX(410%) scale(0.9);", "transform: translateX(510%) scale(0.9);", "transform: translateX(610%) scale(0.9);", "transform: translateX(710%) scale(0.9);", "transform: translateX(810%) scale(0.9);", "transform: translateX(910%) scale(0.9);", "transform: translateX(1010%) scale(0.9);"];
+            positionStyles = [ "transform: translateX(-810%) scale(0.9);", "transform: translateX(-710%) scale(0.9);", "transform: translateX(-610%) scale(0.9);", "transform: translateX(-510%) scale(0.9);", "transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ","transform: translateX(0%);"];
             domElements = {
                 section: document.getElementById("work-section"),
                 backButton: document.getElementById("work-back-button"),
