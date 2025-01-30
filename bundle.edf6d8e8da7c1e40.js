@@ -20640,7 +20640,7 @@
                 this.isCurrentSwipeElement && ("right" == e ? this.moveForward() : this.moveBack())
             }
             moveBack() {
-                8 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex++, this.updatePositions())
+                7 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex++, this.updatePositions())
             }
             moveForward() {
                 0 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex--, this.updatePositions())
@@ -20653,11 +20653,11 @@
             updatePositions(e = !1) {
                 this.itemsAreMoving && !e || (this.render.items.forEach((e => {
                     const t = this.render.items.indexOf(e);
-                    document.getElementById("work-item-" + e.id).style = this.positionStyles[t + this.currentItemIndex], t + this.currentItemIndex != 8 ? document.getElementById("work-item-" + e.id).classList.add("work-inactive-item-container") : document.getElementById("work-item-" + e.id).classList.remove("work-inactive-item-container")
+                    document.getElementById("work-item-" + e.id).style = this.positionStyles[t + this.currentItemIndex], t + this.currentItemIndex != 7 ? document.getElementById("work-item-" + e.id).classList.add("work-inactive-item-container") : document.getElementById("work-item-" + e.id).classList.remove("work-inactive-item-container")
                 })), this.itemsAreMoving = !0, Ap.delayedCall(.5, (() => this.itemsAreMoving = !1)), this.updateNavigation())
             }
             updateNavigation() {
-                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : 8 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
+                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : 7 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
             }
         }
         const nf = [{
