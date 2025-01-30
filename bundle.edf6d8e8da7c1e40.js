@@ -20657,7 +20657,7 @@
                 })), this.itemsAreMoving = !0, Ap.delayedCall(.5, (() => this.itemsAreMoving = !1)), this.updateNavigation())
             }
             updateNavigation() {
-                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : 7 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience.ui.hoverIcon.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
+                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience?.ui?.hoverIcon?.setupDefault()) : 7 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience?.ui?.hoverIcon?.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
             }
         }
         const nf = [{
