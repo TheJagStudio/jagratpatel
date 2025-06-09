@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Sheet Generator - Dashboard</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SheetJS/xlsx library to read Excel files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        /* Custom styles for the application */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            /* Light gray background */
+        }
+
+        /* * US Letter Page and Sticker Styles (Screen Preview)
+         * Using pixel dimensions derived from 96 DPI for consistent JS scaling.
+         * 8.5" -> 816px, 11" -> 1056px, 10mm -> 38px
+         */
+        .a4-page {
+            width: 816px;
+            height: 1056px;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 80px 38px;
+            /* 10mm padding converted to pixels */
+            transform-origin: top left;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            /* Clip any content that might overflow */
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #sticker-preview-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            /* Space between preview pages */
+        }
+
+        /* Styling for each individual sticker */
+        .sticker {
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 6px;
+            background-color: #fff;
+            word-break: break-word;
+            /* Prevent long text from overflowing */
+        }
+
+        /* Text styling within the sticker */
+        .sticker-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #dc2626;
+            /* Red-600 for the brand/title */
+            transform: translateY(-15px);
+            padding: 2px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .sticker-description {
+            font-size: 0.8rem;
+            color: #374151;
+            /* Gray-700 */
+            margin: 4px 0;
+            line-height: 1.3;
+            transform: translateY(-15px);
+            padding: 2px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .sticker-flavor {
+            font-size: 1.5rem;
+            color: #dc2626;
+            /* Gray-700 */
+            font-weight: 600;
+            /* Bold flavor */
+            line-height: 20px;
+            transform: translateY(-15px);
+            padding: 2px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        [contenteditable="true"]:hover {
+            border-color: #e5e7eb;
+            background-color: #f9fafb;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-color: #60a5fa;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+        }
+
+        .sticker-price {
+            font-size: 2.0rem;
+            font-weight: 500;
+            color: #111827;
+            /* Gray-900 */
+            line-height: 35px;
+            transform: translateY(-15px);
+        }
+
+        .sticker-upc {
+            font-size: 1.3rem;
+            color: #111827;
+            /* Gray-600 */
+            font-weight: 1000;
+            line-height: 20px;
+            transform: translateY(-10px);
+        }
+
+        .barcode {
+            width: 260px;
+            height: 70px;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Controls Column -->
+        <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
+            <!-- Header Section -->
+            <header class="text-left mb-6 pb-4 border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-gray-800">Generator Controls</h1>
+                <p class="text-gray-500 mt-1 text-sm">Upload a file and generate your stickers.</p>
+            </header>
+
+            <!-- Main controls -->
+            <div class="space-y-6">
+                <!-- File Upload -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">1. Upload Excel File</label>
+                    <label for="file-upload"
+                        class="relative cursor-pointer bg-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md shadow-sm hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                        </svg>
+                        <span id="file-name">Choose File</span>
+                        <input id="file-upload" type="file" class="sr-only" accept=".xlsx, .xls, .csv">
+                    </label>
+                    <p id="file-info" class="text-xs text-gray-500 mt-2 h-4"></p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">2. Generate & Print</label>
+                    <div class="flex flex-col space-y-3">
+                        <button id="generate-btn"
+                            class="w-full bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-md shadow-sm hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                            disabled>
+                            Generate Stickers
+                        </button>
+                        <button id="print-btn"
+                            class="hidden w-full bg-gray-700 text-white font-semibold py-2.5 px-6 rounded-md shadow-sm hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm2-9V5a2 2 0 012-2h2a2 2 0 012 2v3m-6 0h6">
+                                </path>
+                            </svg>
+                            Print All Pages
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Column -->
+        <div class="lg:col-span-2">
+            <header class="text-left mb-6 pb-4 border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-gray-800">Sticker Preview</h1>
+                <p id="preview-info" class="text-gray-500 mt-1 text-sm">Your generated sticker sheets will appear here.
+                </p>
+            </header>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="hidden text-center my-8">
+                <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <p class="text-gray-600 mt-2">Generating your stickers...</p>
+            </div>
+
+            <!-- Container for the generated sticker pages -->
+            <div id="sticker-preview-area"
+                class="bg-gray-200/50 p-4 rounded-xl border border-gray-200 h-[80vh] overflow-y-auto">
+                <!-- A4 pages will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM element references
+        const fileUpload = document.getElementById('file-upload');
+        const fileNameSpan = document.getElementById('file-name');
+        const fileInfo = document.getElementById('file-info');
+        const generateBtn = document.getElementById('generate-btn');
+        const printBtn = document.getElementById('print-btn');
+        const stickerPreviewArea = document.getElementById('sticker-preview-area');
+        const loadingIndicator = document.getElementById('loading');
+        const previewInfo = document.getElementById('preview-info'); let excelData = null;
+
+        // Constants for US Letter dimensions in pixels at 96 DPI for screen preview
+        const A4_WIDTH_PX = 816;  // 8.5" × 96 DPI
+        const A4_HEIGHT_PX = 1056; // 11" × 96 DPI
+
+        // Storage keys
+        const STORAGE_KEYS = {
+            EXCEL_DATA: 'stickerGenerator_excelData',
+            USER_EDITS: 'stickerGenerator_userEdits'
+        };
+
+        // Manage user edits
+        let userEdits = {};
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            try {
+                const savedExcelData = localStorage.getItem(STORAGE_KEYS.EXCEL_DATA);
+                const savedUserEdits = localStorage.getItem(STORAGE_KEYS.USER_EDITS);
+
+                if (savedExcelData) {
+                    excelData = JSON.parse(savedExcelData);
+                    generateBtn.disabled = false;
+                    fileInfo.textContent = 'Loaded data from previous session.';
+                }
+
+                if (savedUserEdits) {
+                    userEdits = JSON.parse(savedUserEdits);
+                }
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        }
+
+        // Save current data to localStorage
+        function saveToLocalStorage() {
+            try {
+                if (excelData) {
+                    localStorage.setItem(STORAGE_KEYS.EXCEL_DATA, JSON.stringify(excelData));
+                }
+                if (Object.keys(userEdits).length > 0) {
+                    localStorage.setItem(STORAGE_KEYS.USER_EDITS, JSON.stringify(userEdits));
+                }
+            } catch (error) {
+                console.error('Error saving data:', error);
+            }
+        }        // Handle editable field changes
+        function handleFieldEdit(event, index, field) {
+            const content = event.target.textContent;
+            if (!userEdits[index]) {
+                userEdits[index] = {};
+            }
+            userEdits[index][field] = content;
+            saveToLocalStorage();
+        }
+
+        // Handle paste events to strip formatting
+        function handlePaste(event) {
+            event.preventDefault();
+            const text = (event.clipboardData || window.clipboardData).getData('text/plain');
+            const selection = window.getSelection();
+            if (selection.getRangeAt && selection.rangeCount) {
+                const range = selection.getRangeAt(0);
+                range.deleteContents();
+                const textNode = document.createTextNode(text);
+                range.insertNode(textNode);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        // Load saved data on page load
+        loadSavedData();
+
+        /**
+         * Calculates scale for the preview pages.
+         */
+        function getPreviewScale() {
+            const previewContainerWidth = stickerPreviewArea.clientWidth;
+            // Subtract a buffer for padding and potential scrollbar
+            const targetPreviewWidth = previewContainerWidth - 60; // Increased buffer
+            return targetPreviewWidth / A4_WIDTH_PX;
+        }
+
+        /**
+         * Handles file selection and processing.
+         */
+        fileUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                generateBtn.disabled = false;
+                fileInfo.textContent = 'File ready to be generated.';
+                printBtn.classList.add('hidden');
+                stickerPreviewArea.innerHTML = '';
+                previewInfo.textContent = 'Your generated sticker sheets will appear here.'; const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        excelData = XLSX.utils.sheet_to_json(worksheet);
+
+                        // Clear previous edits and update storage
+                        userEdits = {};
+                        saveToLocalStorage();
+                    } catch (error) {
+                        console.error("Error reading Excel file:", error);
+                        fileInfo.textContent = 'Error: Invalid or corrupted file.';
+                        excelData = null;
+                        generateBtn.disabled = true;
+                    }
+                };
+                reader.onerror = () => {
+                    fileInfo.textContent = 'Error: Failed to read file.';
+                    excelData = null;
+                    generateBtn.disabled = true;
+                }
+                reader.readAsArrayBuffer(file);
+            } else {
+                fileNameSpan.textContent = 'Choose File';
+                fileInfo.textContent = '';
+                generateBtn.disabled = true;
+                excelData = null;
+            }
+        });
+
+        /**
+         * Generates and displays sticker pages.
+         */
+        generateBtn.addEventListener('click', () => {
+            if (!excelData) {
+                fileInfo.textContent = 'Please upload a valid file first.';
+                return;
+            }
+
+            loadingIndicator.classList.remove('hidden');
+            stickerPreviewArea.classList.add('hidden');
+            generateBtn.disabled = true;
+            fileInfo.textContent = 'Generating...';
+
+            // Use a timeout to allow the UI to update to the loading state
+            setTimeout(() => {
+                stickerPreviewArea.innerHTML = ''; // Clear previous content
+
+                const scale = getPreviewScale();
+                const stickersPerPage = 6;
+                const numPages = Math.ceil(excelData.length / stickersPerPage);
+
+                for (let i = 0; i < numPages; i++) {
+                    // Create a wrapper to control layout space of the scaled page
+                    const pageWrapper = document.createElement('div');
+                    pageWrapper.className = 'page-wrapper';
+                    pageWrapper.style.width = `${A4_WIDTH_PX * scale}px`;
+                    pageWrapper.style.height = `${A4_HEIGHT_PX * scale}px`;
+
+                    // Create the actual A4 page element
+                    const page = document.createElement('div');
+                    page.className = 'a4-page';
+                    page.style.transform = `scale(${scale})`;
+
+                    const grid = document.createElement('div');
+                    grid.className = 'sticker-grid';
+
+                    const pageData = excelData.slice(i * stickersPerPage, (i + 1) * stickersPerPage);
+
+                    let stickerHtmlContent = '';
+                    pageData.forEach(item => {
+                        // Use requested column names with fallbacks to old names/defaults                        
+                        const productName = item.productName || item.MasterProStandardUnit || 'No Product Name';
+                        const price = Number(item.standardPrice || item.UserPrice || 0).toFixed(2);
+                        const sku = item.sku || item.productId || 'N/A';
+                        const upc = item.upc || 'N/A';
+
+                        // Parse the productName string based on user's rule
+                        const parts = productName.split(' - ').map(p => p.trim()).filter(p => p); // filter out empty parts
+                        let title = productName; // Default to full name
+                        let description = '';
+                        let flavor = '';
+
+                        if (parts.length >= 4) {
+                            title = parts.slice(0, 2).join(' - ');
+                            description = parts.slice(2, -1).join(' - ');
+                            flavor = parts.slice(-1)[0];
+                        } else if (parts.length === 3) {
+                            title = parts.slice(0, 2).join(' - ');
+                            description = ''; // No middle part
+                            flavor = parts[2];
+                        } else if (parts.length === 2) {
+                            title = parts.join(' - ');
+                        }
+
+                        // Apply any saved user edits
+                        const savedEdits = userEdits[i * stickersPerPage + pageData.indexOf(item)] || {};
+                        title = savedEdits.title || title;
+                        description = savedEdits.description || description;
+                        flavor = savedEdits.flavor || flavor;
+
+                        stickerHtmlContent += `
+                            <div class="sticker">                                <div class="sticker-title" contenteditable="true" spellcheck="false" 
+                                    onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'title')"
+                                    onpaste="handlePaste(event)">${title}</div>
+                                <div class="flex flex-col justify-center">
+                                    <div class="sticker-description" contenteditable="true" spellcheck="false"
+                                        onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'description')"
+                                        onpaste="handlePaste(event)">${description}</div>
+                                    <div class="sticker-flavor" contenteditable="true" spellcheck="false"
+                                        onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'flavor')"
+                                        onpaste="handlePaste(event)">${flavor}</div>
+                                </div>
+                                <div>                                    <div class="sticker-price">$${price}</div>
+                                    <svg class="barcode"
+                                        jsbarcode-format="auto"
+                                        jsbarcode-value="${upc}"
+                                        jsbarcode-textmargin="0"
+                                        jsbarcode-displayValue="false"
+                                        jsbarcode-fontoptions="bold">
+                                    </svg>
+                                    <div class="sticker-upc">${upc}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    grid.innerHTML = stickerHtmlContent;
+
+
+                    // Fill remaining grid cells with placeholders
+                    const remainingStickers = stickersPerPage - pageData.length;
+                    for (let j = 0; j < remainingStickers; j++) {
+                        grid.innerHTML += '<div class="sticker"></div>';
+                    }
+
+                    page.appendChild(grid);
+                    pageWrapper.appendChild(page);
+                    stickerPreviewArea.appendChild(pageWrapper);
+                }
+
+                printBtn.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+                stickerPreviewArea.classList.remove('hidden');
+                generateBtn.disabled = false;
+                fileInfo.textContent = `File processed.`;
+                previewInfo.textContent = `Showing ${excelData.length} stickers on ${numPages} pages.`;
+                // Initialize barcodes after adding to DOM
+                JsBarcode(".barcode").init();
+            }, 100);
+        });
+        /**
+        * Generates PDF from the sticker pages
+        */
+        printBtn.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            const pages = document.querySelectorAll('.page-wrapper');
+            let currentPage = 0;
+
+            // Create PDF with Letter size dimensions (8.5 x 11 inches)
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'in',
+                format: 'letter'
+            });
+
+            for (const page of pages) {
+                try {
+                    // Convert each page to canvas
+                    const canvas = await html2canvas(page, {
+                        scale: 2, // Higher scale for better quality
+                        useCORS: true,
+                        logging: false,
+                        width: page.offsetWidth,
+                        height: page.offsetHeight
+                    });
+
+                    // Convert canvas to image
+                    const imgData = canvas.toDataURL('image/jpeg', 2.0);
+                    // Add new page for all pages except the first
+                    if (currentPage > 0) {
+                        doc.addPage('letter', 'portrait');
+                    }
+
+                    // Add image to PDF, fitting to page width with proper margins
+                    doc.addImage(imgData, 'JPEG', 0, 0, 8.5, 11, undefined, 'FAST');
+
+                    currentPage++;
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                }
+            }
+
+            // Auto print the PDF
+            doc.autoPrint();
+            doc.output('dataurlnewwindow');
+        });
+
+        /**
+         * Adjusts preview scale on window resize for responsiveness.
+         */
+        window.addEventListener('resize', () => {
+            const pageWrappers = stickerPreviewArea.querySelectorAll('.page-wrapper');
+            if (pageWrappers.length > 0) {
+                const scale = getPreviewScale();
+                pageWrappers.forEach(wrapper => {
+                    wrapper.style.width = `${A4_WIDTH_PX * scale}px`;
+                    wrapper.style.height = `${A4_HEIGHT_PX * scale}px`;
+                    const page = wrapper.querySelector('.page-page');
+                    if (page) {
+                        page.style.transform = `scale(${scale})`;
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
