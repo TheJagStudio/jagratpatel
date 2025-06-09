@@ -20585,221 +20585,236 @@
             }
         }
         class ef {
-            isShowing = !1;
-            duration = .6;
+            isShowing = false;
+            duration = 0.6;
             domElements = {
                 container: document.getElementById("transition-container"),
                 logo: document.getElementById("loadig-animation-container")
             };
+        
             constructor() {
-                this.experience = new Jf, this.sounds = this.experience.sounds
+                // Jf seems to be the main 'Experience' or app class.
+                this.experience = new Jf;
+                this.sounds = this.experience.sounds;
             }
+        
             show() {
-                this.domElements.container.classList.remove("hide"), this.isShowing = !0, this.domElements.container.classList.remove("hideTopTransition"), this.domElements.container.classList.remove("hideIntroTransition"), this.domElements.container.classList.add("showTransition"), Ap.delayedCall(.3, (() => this.sounds.play("transition0")))
+                this.domElements.container.classList.remove("hide");
+                this.isShowing = true;
+                this.domElements.container.classList.remove("hideTopTransition");
+                this.domElements.container.classList.remove("hideIntroTransition");
+                this.domElements.container.classList.add("showTransition");
+                // Ap.delayedCall seems to be from an animation library like GSAP.
+                Ap.delayedCall(0.3, () => this.sounds.play("transition0"));
             }
+        
             hide() {
-                Ap.delayedCall(.15, (() => {
-                    this.domElements.container.classList.remove("showTransition"), this.domElements.container.classList.add("hideTopTransition"), Ap.delayedCall(this.duration, (() => this.isShowing = !1)), Ap.delayedCall(.2, (() => this.sounds.play("transition1")))
-                }))
+                Ap.delayedCall(0.15, () => {
+                    this.domElements.container.classList.remove("showTransition");
+                    this.domElements.container.classList.add("hideTopTransition");
+                    Ap.delayedCall(this.duration, () => this.isShowing = false);
+                    Ap.delayedCall(0.2, () => this.sounds.play("transition1"));
+                });
             }
         }
+        
+        /**
+         * Controls the logic for the project carousel, including navigation
+         * through clicks, swipes, and keyboard arrows.
+         */
         class tf {
-            positionStyles = [ "transform: translateX(-810%) scale(0.9);", "transform: translateX(-710%) scale(0.9);", "transform: translateX(-610%) scale(0.9);", "transform: translateX(-510%) scale(0.9);", "transform: translateX(-410%) scale(0.9);", "transform: translateX(-310%) scale(0.9); ", "transform: translateX(-210%) scale(0.9);", "transform: translateX(-110%) scale(0.9); ","transform: translateX(0%);"];
+            // Styles to position the 9 project cards in the carousel stack.
+            positionStyles = [
+                "transform: translateX(-810%) scale(0.9);",
+                "transform: translateX(-710%) scale(0.9);",
+                "transform: translateX(-610%) scale(0.9);",
+                "transform: translateX(-510%) scale(0.9);",
+                "transform: translateX(-410%) scale(0.9);",
+                "transform: translateX(-310%) scale(0.9);",
+                "transform: translateX(-210%) scale(0.9);",
+                "transform: translateX(-110%) scale(0.9);",
+                "transform: translateX(0%);"
+            ];
+        
             domElements = {
                 section: document.getElementById("work-section"),
                 backButton: document.getElementById("work-back-button"),
                 nextButton: document.getElementById("work-next-button")
             };
-            currentItemIndex = 8;
-            itemsAreMoving = !0;
+        
+            itemsAreMoving = true;
+        
             constructor() {
-                this.experience = new Jf, this.gestures = this.experience.gestures, this.render = this.experience.ui.work.render, this.sounds = this.experience.sounds, this.scroll = this.experience.ui.scroll, this.sizes = this.experience.sizes, this.addButtonEventListeners(), this.initSwipes(), this.updatePositions(!0), this.onArrowClick(), this.sizes.on("portrait", (() => this.onOrientationChange())), this.sizes.on("landscape", (() => this.onOrientationChange()))
+                this.experience = new Jf;
+                this.gestures = this.experience.gestures;
+                this.render = this.experience.ui.work.render;
+                this.sounds = this.experience.sounds;
+                this.scroll = this.experience.ui.scroll;
+                this.sizes = this.experience.sizes;
+                
+                // --- FIX: Derive total item count from the data source instead of hardcoding.
+                this.totalItems = nf.length;
+                // The index logic is inverted: 8 is the start (project 0), 0 is the end (project 8).
+                this.currentItemIndex = this.totalItems - 1;
+        
+                this.addButtonEventListeners();
+                this.initSwipes();
+                this.updatePositions(true);
+                this.onArrowClick();
+                this.sizes.on("portrait", () => this.onOrientationChange());
+                this.sizes.on("landscape", () => this.onOrientationChange());
             }
+        
+            /**
+             * Handles orientation change. NOTE: This resets the carousel to the *last* item.
+             * This might be intentional for a specific layout in portrait mode.
+             */
             onOrientationChange() {
-                this.currentItemIndex = 0, this.updatePositions()
+                this.currentItemIndex = 0;
+                this.updatePositions();
             }
+        
             addButtonEventListeners() {
-                this.domElements.backButton.addEventListener("click", (() => {
-                    this.sounds.play("buttonClick"), this.moveBack()
-                })), this.domElements.nextButton.addEventListener("click", (() => {
-                    this.sounds.play("buttonClick"), this.moveForward()
-                }))
+                this.domElements.backButton.addEventListener("click", () => {
+                    this.sounds.play("buttonClick");
+                    this.moveBack();
+                });
+                this.domElements.nextButton.addEventListener("click", () => {
+                    this.sounds.play("buttonClick");
+                    this.moveForward();
+                });
             }
+        
             initSwipes() {
-                this.gestures.on("swipe-right", (() => this.swipe("right"))), this.gestures.on("swipe-left", (() => this.swipe("left"))), this.domElements.section.addEventListener("touchend", (() => {
-                    setTimeout((() => this.isCurrentSwipeElement = !1))
-                }), {
-                    passive: !0
-                }), this.domElements.section.addEventListener("touchstart", (() => {
-                    this.isCurrentSwipeElement = !0
-                }), {
-                    passive: !0
-                })
+                this.gestures.on("swipe-right", () => this.swipe("right"));
+                this.gestures.on("swipe-left", () => this.swipe("left"));
+                this.domElements.section.addEventListener("touchend", () => {
+                    setTimeout(() => this.isCurrentSwipeElement = false);
+                }, { passive: true });
+                this.domElements.section.addEventListener("touchstart", () => {
+                    this.isCurrentSwipeElement = true;
+                }, { passive: true });
             }
+        
             swipe(e) {
-                this.isCurrentSwipeElement && ("right" == e ? this.moveForward() : this.moveBack())
+                if (this.isCurrentSwipeElement) {
+                    "right" == e ? this.moveForward() : this.moveBack();
+                }
             }
+        
+            /**
+             * Moves to the previous item. (Increments index towards the start).
+             */
             moveBack() {
-                8 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex++, this.updatePositions())
+                // --- FIX: Use dynamic totalItems count for the boundary check.
+                if (this.currentItemIndex !== this.totalItems - 1 && !this.itemsAreMoving) {
+                    // This class check seems fragile but is kept as it might be part of a complex animation system.
+                    if (document.getElementById("work-item-0").classList.contains("work-item-container-transition")) {
+                        this.currentItemIndex++;
+                        this.updatePositions();
+                    }
+                }
             }
+        
+            /**
+             * Moves to the next item. (Decrements index towards the end).
+             */
             moveForward() {
-                0 != this.currentItemIndex && !this.itemsAreMoving && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.currentItemIndex--, this.updatePositions())
+                if (this.currentItemIndex !== 0 && !this.itemsAreMoving) {
+                    if (document.getElementById("work-item-0").classList.contains("work-item-container-transition")) {
+                        this.currentItemIndex--;
+                        this.updatePositions();
+                    }
+                }
             }
+        
+            /**
+             * Handles keyboard arrow navigation.
+             */
             onArrowClick() {
-                window.addEventListener("keyup", (() => {
-                    this.scroll.scrollAllowed() && (39 == event.keyCode ? this.moveForward() : 37 == event.keyCode && this.moveBack())
-                }))
+                // --- FIX: Use the 'event' object passed to the listener instead of the deprecated global 'event'.
+                // --- FIX: Use 'event.key' for better readability and modern practice over 'keyCode'.
+                window.addEventListener("keyup", (event) => {
+                    if (this.scroll.scrollAllowed()) {
+                        if (event.key === "ArrowRight") {
+                            this.moveForward();
+                        } else if (event.key === "ArrowLeft") {
+                            this.moveBack();
+                        }
+                    }
+                });
             }
-            updatePositions(e = !1) {
-                this.itemsAreMoving && !e || (this.render.items.forEach((e => {
-                    const t = this.render.items.indexOf(e);
-                    document.getElementById("work-item-" + e.id).style = this.positionStyles[t + this.currentItemIndex], t + this.currentItemIndex != 8 ? document.getElementById("work-item-" + e.id).classList.add("work-inactive-item-container") : document.getElementById("work-item-" + e.id).classList.remove("work-inactive-item-container")
-                })), this.itemsAreMoving = !0, Ap.delayedCall(.5, (() => this.itemsAreMoving = !1)), this.updateNavigation())
+        
+            /**
+             * Core function to update the CSS transform of each card based on the current index.
+             */
+            updatePositions(e = false) {
+                if (this.itemsAreMoving && !e) return;
+        
+                this.render.items.forEach((item => {
+                    const itemIndex = this.render.items.indexOf(item);
+                    const itemElement = document.getElementById("work-item-" + item.id);
+                    // The position is determined by the item's own index plus the current carousel index.
+                    const styleIndex = itemIndex + this.currentItemIndex;
+                    
+                    // --- FIX: Use dynamic totalItems count for the active item check.
+                    const isActive = styleIndex === (this.totalItems - 1);
+        
+                    if (itemElement) {
+                        itemElement.style = this.positionStyles[styleIndex];
+                        if (!isActive) {
+                            itemElement.classList.add("work-inactive-item-container");
+                        } else {
+                            itemElement.classList.remove("work-inactive-item-container");
+                        }
+                    }
+                }));
+        
+                this.itemsAreMoving = true;
+                Ap.delayedCall(0.5, () => this.itemsAreMoving = false);
+                this.updateNavigation();
             }
+        
+            /**
+             * Disables or enables the back/next navigation buttons at the boundaries.
+             */
             updateNavigation() {
-                0 == this.currentItemIndex ? (this.domElements.nextButton.classList.add("work-disabled-navigation-button"), this.experience?.ui?.hoverIcon?.setupDefault()) : 8 == this.currentItemIndex ? (this.domElements.backButton.classList.add("work-disabled-navigation-button"), this.experience?.ui?.hoverIcon?.setupDefault()) : (this.domElements.nextButton.classList.remove("work-disabled-navigation-button"), this.domElements.backButton.classList.remove("work-disabled-navigation-button"))
+                // --- FIX: Use dynamic totalItems count for boundary checks.
+                if (this.currentItemIndex === 0) {
+                    this.domElements.nextButton.classList.add("work-disabled-navigation-button");
+                    this.experience?.ui?.hoverIcon?.setupDefault();
+                } else if (this.currentItemIndex === this.totalItems - 1) {
+                    this.domElements.backButton.classList.add("work-disabled-navigation-button");
+                    this.experience?.ui?.hoverIcon?.setupDefault();
+                } else {
+                    this.domElements.nextButton.classList.remove("work-disabled-navigation-button");
+                    this.domElements.backButton.classList.remove("work-disabled-navigation-button");
+                }
             }
         }
+        
+        // --- Data for Projects ---
         const nf = [{
-                "id": 0,
-                "name": "Cloud Storage",
-                "description": "A free open source decentralized storage system for everyone.",
-                "image": "images/projects/cloudStorage.jpg",
-                "tags": [
-                    "Django",
-                    "javascript",
-                    "Python",
-                    "Blockchain",
-                    "api",
-                    "html",
-                    "css"
-                ],
-                "liveview": "#",
-                "github": "https://github.com/TheJagStudio",
-                "alt": "A free open source decentralized storage system for everyone."
-            },
-            {
-                "id": 1,
-                "name": "Food Compare",
-                "description": "This app compares food prices from Swiggy and Zomato.",
-                "image": "images/projects/foodCompare.jpg",
-                "tags": [
-                    "javascript",
-                    "Django",
-                    "html",
-                    "css"
-                ],
-                "liveview": "#",
-                "github": "https://github.com/TheJagStudio",
-                "alt": "This app compares food prices from Swiggy and Zomato."
-            },
-            {
-                "id": 2,
-                "name": "Youtube Clone",
-                "description": "JavaScript based Youtube Clone",
-                "image": "images/projects/youtubeClone.png",
-                "tags": [
-                    "javascript",
-                    "html",
-                    "css"
-                ],
-                "liveview": "https://wandering-sound-4807.on.fleek.co/",
-                "github": "https://github.com/TheJagStudio",
-                "alt": "JavaScript based Youtube Clone"
-            },
-            {
-                "id": 3,
-                "name": "Spotify Clone",
-                "description": "JavaScript based Spotify Clone",
-                "image": "images/projects/spotifyClone.png",
-                "tags": [
-                    "javascript",
-                    "html",
-                    "css"
-                ],
-                "liveview": "https://gentle-dawn-5346.on.fleek.co/",
-                "github": "https://github.com/TheJagStudio",
-                "alt": "JavaScript based Spotify Clone"
-            },
-            {
-                "id": 4,
-                "name": "Iphone Music Player",
-                "description": "JavaScript based Iphone Music Player",
-                "image": "images/projects/spotifyIphone.png",
-                "tags": [
-                    "javascript",
-                    "html",
-                    "css"
-                ],
-                "liveview": "https://gentle-dawn-5346.on.fleek.co/",
-                "github": "https://github.com/TheJagStudio",
-                "alt": "JavaScript based Iphone Music Player"
-            },
-            {
-                "id": 5,
-                "name": "InstaBuild",
-                "description": "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs.",
-                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg",
-                "tags": [
-                    "ViteJs",
-                    "ReactJs",
-                    "TailwindCSS",
-                    "Django",
-                    "Python"
-                ],
-                "liveview": "https://instabuild.tech",
-                "github": "https://github.com/TheJagStudio/InstaBuild",
-                "alt": "AI APP Gen"
-            },
-            {
-                "id": 6,
-                "name": "LawGPT",
-                "description": "A user-friendly AI-powered chatbot for legal assistance",
-                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/664/419/datas/gallery.jpg",
-                "tags": [
-                    "ViteJs",
-                    "ReactJs",
-                    "TailwindCSS",
-                    "Django",
-                    "Python"
-                ],
-                "liveview": "https://www.youtube.com/watch?v=on_7pH2jfco",
-                "github": "https://github.com/TheJagStudio/LawGPT.git",
-                "alt": "LawGPT"
-            },
-            {
-                "id": 7,
-                "name": "AbsoluteAI",
-                "description": "Revolutionize data extraction with AbsoluteAI: Harnessing the power of Large Language Models for unparalleled web scraping capabilities.",
-                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/886/852/datas/gallery.jpg",
-                "tags": [
-                    "ViteJs",
-                    "ReactJs",
-                    "TailwindCSS",
-                    "Django",
-                    "Python"
-                ],
-                "liveview": "https://www.youtube.com/watch?v=Rp1pnpGexOA",
-                "github": "https://github.com/TheJagStudio/AbsoluteAI",
-                "alt": "AbsoluteAI"
-            },
-            {
-                "id": 8,
-                "name": "Müsica",
-                "description": "Make your own Music with a click.",
-                "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/051/240/datas/gallery.jpg",
-                "tags": [
-                    "ViteJs",
-                    "ReactJs",
-                    "TailwindCSS",
-                    "Django",
-                    "Python"
-                ],
-                "liveview": "https://www.youtube.com/watch?v=crC5xM3vH94",
-                "github": "https://github.com/TheJagStudio/Musica",
-                "alt": "Müsica"
-            }
-        ];
+            "id": 0, "name": "Cloud Storage", "description": "A free open source decentralized storage system for everyone.", "image": "images/projects/cloudStorage.jpg", "tags": ["Django", "javascript", "Python", "Blockchain", "api", "html", "css"], "liveview": "#", "github": "https://github.com/TheJagStudio", "alt": "A free open source decentralized storage system for everyone."
+        }, {
+            "id": 1, "name": "Food Compare", "description": "This app compares food prices from Swiggy and Zomato.", "image": "images/projects/foodCompare.jpg", "tags": ["javascript", "Django", "html", "css"], "liveview": "#", "github": "https://github.com/TheJagStudio", "alt": "This app compares food prices from Swiggy and Zomato."
+        }, {
+            "id": 2, "name": "Youtube Clone", "description": "JavaScript based Youtube Clone", "image": "images/projects/youtubeClone.png", "tags": ["javascript", "html", "css"], "liveview": "https://wandering-sound-4807.on.fleek.co/", "github": "https://github.com/TheJagStudio", "alt": "JavaScript based Youtube Clone"
+        }, {
+            "id": 3, "name": "Spotify Clone", "description": "JavaScript based Spotify Clone", "image": "images/projects/spotifyClone.png", "tags": ["javascript", "html", "css"], "liveview": "https://gentle-dawn-5346.on.fleek.co/", "github": "https://github.com/TheJagStudio", "alt": "JavaScript based Spotify Clone"
+        }, {
+            "id": 4, "name": "Iphone Music Player", "description": "JavaScript based Iphone Music Player", "image": "images/projects/spotifyIphone.png", "tags": ["javascript", "html", "css"], "liveview": "https://gentle-dawn-5346.on.fleek.co/", "github": "https://github.com/TheJagStudio", "alt": "JavaScript based Iphone Music Player"
+        }, {
+            "id": 5, "name": "InstaBuild", "description": "InstaBuild.tech is a prompt-driven web application that generates a customized webapp right now, based on the user’s unique needs.", "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/116/314/datas/gallery.jpg", "tags": ["ViteJs", "ReactJs", "TailwindCSS", "Django", "Python"], "liveview": "https://instabuild.tech", "github": "https://github.com/TheJagStudio/InstaBuild", "alt": "AI APP Gen"
+        }, {
+            "id": 6, "name": "LawGPT", "description": "A user-friendly AI-powered chatbot for legal assistance", "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/664/419/datas/gallery.jpg", "tags": ["ViteJs", "ReactJs", "TailwindCSS", "Django", "Python"], "liveview": "https://www.youtube.com/watch?v=on_7pH2jfco", "github": "https://github.com/TheJagStudio/LawGPT.git", "alt": "LawGPT"
+        }, {
+            "id": 7, "name": "AbsoluteAI", "description": "Revolutionize data extraction with AbsoluteAI: Harnessing the power of Large Language Models for unparalleled web scraping capabilities.", "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/886/852/datas/gallery.jpg", "tags": ["ViteJs", "ReactJs", "TailwindCSS", "Django", "Python"], "liveview": "https://www.youtube.com/watch?v=Rp1pnpGexOA", "github": "https://github.com/TheJagStudio/AbsoluteAI", "alt": "AbsoluteAI"
+        }, {
+            "id": 8, "name": "Müsica", "description": "Make your own Music with a click.", "image": "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/051/240/datas/gallery.jpg", "tags": ["ViteJs", "ReactJs", "TailwindCSS", "Django", "Python"], "liveview": "https://www.youtube.com/watch?v=crC5xM3vH94", "github": "https://github.com/TheJagStudio/Musica", "alt": "Müsica"
+        }];
+        
+        // --- Data for HTML Tag Styles ---
         const rf = {
             html: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">HTML</div>',
             css: '<div class="work-item-tag" style="background: white; border: 1px solid #7C8594; color: #7C8594">CSS</div>',
@@ -20814,71 +20829,162 @@
             api: '<div class="work-item-tag" style="background: #CA49F8;">API</div>',
             backend: '<div class="work-item-tag" style="background: #8433CC;">Backend</div>'
         };
+        
+        /**
+         * Renders the project cards into the DOM from the project data.
+         */
         class sf {
             domElements = {
                 renderContainer: document.getElementById("work-render-container")
             };
+        
             constructor() {
-                this.experience = new Jf, this.sounds = this.experience.sounds, this.items = nf, this.tags = rf, this.renderItems()
+                this.experience = new Jf;
+                this.sounds = this.experience.sounds;
+                this.items = nf;
+                this.tags = rf;
+                this.renderItems();
             }
+        
             renderItems() {
                 this.items.forEach((e => {
-                    this.domElements.renderContainer.insertAdjacentHTML("beforeend", `\n            <div id="work-item-${e.id}" class="work-item-container column">\n                <img class="work-item-image" src="${e.image}" alt="${e.alt}" height="300" width="334"/>\n                <div class="work-item-content-container">\n                    <h3>${e.name}</h3>\n                    <div class="work-item-tag-container row">\n                        ${this.renderTags(e.tags)}\n                    </div>\n                    <span>${e.description}</span>\n                </div>\n                <div class="work-item-button-container row">\n                    ${this.renderButtons(e)}\n                </div>\n                ${e.bannerIcons?this.renderBanner(e):""}\n            </div>\n            `), this.addEventListenersToCard(e)
-                }))
+                    // Using a template literal to build the HTML for each card.
+                    this.domElements.renderContainer.insertAdjacentHTML("beforeend", `
+                        <div id="work-item-${e.id}" class="work-item-container column">
+                            <img class="work-item-image" src="${e.image}" alt="${e.alt}" height="300" width="334"/>
+                            <div class="work-item-content-container">
+                                <h3>${e.name}</h3>
+                                <div class="work-item-tag-container row">
+                                    ${this.renderTags(e.tags)}
+                                </div>
+                                <span>${e.description}</span>
+                            </div>
+                            <div class="work-item-button-container row">
+                                ${this.renderButtons(e)}
+                            </div>
+                            ${e.bannerIcons ? this.renderBanner(e) : ""}
+                        </div>
+                    `);
+                    this.addEventListenersToCard(e);
+                }));
             }
+        
             renderBanner(e) {
                 let t = "";
-                return t = `\n            <div class="work-banner-container row center">\n                ${e.bannerIcons.map((e=>`<img src="${e.src}" alt="${e.alt}" height="64" width="64"/>`))}\n                <span>Website Of<br>The Day</span>\n            </div>\n        `, t
+                t = `
+                    <div class="work-banner-container row center">
+                        ${e.bannerIcons.map((e => `<img src="${e.src}" alt="${e.alt}" height="64" width="64"/>`))}
+                        <span>Website Of<br>The Day</span>
+                    </div>
+                `;
+                return t;
             }
+        
             renderButtons(e) {
                 let t = "";
-                return t = e.github ? `\n                <div id="work-item-gray-button-${e.id}" class="work-item-gray-button center gray-hover" ${e.liveview?"":'style="width: 100%"'}>\n                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"  class="code-icon">\n                        <use href="#code-path"/>\n                    </svg>\n                 ${e.liveview?"":"<span>Source Code</span>"}\n                </div>\n                 ${e.liveview?`<div id="work-item-orange-button-${e.id}" class="work-item-orange-button small-button center orange-hover">Live View</div>`:""}\n            ` : e.twitter ? `\n            <div id="work-item-orange-button-${e.id}" class="work-item-orange-button small-button center orange-hover" style="width: 100%; margin: 0;">\n                <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="24px" height="24px" style="margin-right: 5px">    \n                    <path d="M28,6.937c-0.957,0.425-1.985,0.711-3.064,0.84c1.102-0.66,1.947-1.705,2.345-2.951c-1.03,0.611-2.172,1.055-3.388,1.295 c-0.973-1.037-2.359-1.685-3.893-1.685c-2.946,0-5.334,2.389-5.334,5.334c0,0.418,0.048,0.826,0.138,1.215 c-4.433-0.222-8.363-2.346-10.995-5.574C3.351,6.199,3.088,7.115,3.088,8.094c0,1.85,0.941,3.483,2.372,4.439 c-0.874-0.028-1.697-0.268-2.416-0.667c0,0.023,0,0.044,0,0.067c0,2.585,1.838,4.741,4.279,5.23 c-0.447,0.122-0.919,0.187-1.406,0.187c-0.343,0-0.678-0.034-1.003-0.095c0.679,2.119,2.649,3.662,4.983,3.705 c-1.825,1.431-4.125,2.284-6.625,2.284c-0.43,0-0.855-0.025-1.273-0.075c2.361,1.513,5.164,2.396,8.177,2.396 c9.812,0,15.176-8.128,15.176-15.177c0-0.231-0.005-0.461-0.015-0.69C26.38,8.945,27.285,8.006,28,6.937z"/>\n                </svg>\n                Stay up to date\n            </div>` : `\n                <div id="work-item-gray-button-${e.id}" class="work-item-gray-button center" style="width: 100%; background: #a7adb8; cursor: unset;">\n                    Work in progress\n                </div>\n            `, t
+                if (e.github) {
+                    return `
+                        <div id="work-item-gray-button-${e.id}" class="work-item-gray-button center gray-hover" ${e.liveview ? "" : 'style="width: 100%"'}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="code-icon">
+                                <use href="#code-path"/>
+                            </svg>
+                            ${e.liveview ? "" : "<span>Source Code</span>"}
+                        </div>
+                        ${e.liveview ? `<div id="work-item-orange-button-${e.id}" class="work-item-orange-button small-button center orange-hover">Live View</div>` : ""}
+                    `;
+                } else if (e.twitter) {
+                    return `
+                        <div id="work-item-orange-button-${e.id}" class="work-item-orange-button small-button center orange-hover" style="width: 100%; margin: 0;">
+                            <svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="24px" height="24px" style="margin-right: 5px">
+                                <path d="M28,6.937c-0.957,0.425-1.985,0.711-3.064,0.84c1.102-0.66,1.947-1.705,2.345-2.951c-1.03,0.611-2.172,1.055-3.388,1.295 c-0.973-1.037-2.359-1.685-3.893-1.685c-2.946,0-5.334,2.389-5.334,5.334c0,0.418,0.048,0.826,0.138,1.215 c-4.433-0.222-8.363-2.346-10.995-5.574C3.351,6.199,3.088,7.115,3.088,8.094c0,1.85,0.941,3.483,2.372,4.439 c-0.874-0.028-1.697-0.268-2.416-0.667c0,0.023,0,0.044,0,0.067c0,2.585,1.838,4.741,4.279,5.23 c-0.447,0.122-0.919,0.187-1.406,0.187c-0.343,0-0.678-0.034-1.003-0.095c0.679,2.119,2.649,3.662,4.983,3.705 c-1.825,1.431-4.125,2.284-6.625,2.284c-0.43,0-0.855-0.025-1.273-0.075c2.361,1.513,5.164,2.396,8.177,2.396 c9.812,0,15.176-8.128,15.176-15.177c0-0.231-0.005-0.461-0.015-0.69C26.38,8.945,27.285,8.006,28,6.937z"/>
+                            </svg>
+                            Stay up to date
+                        </div>`;
+                } else {
+                    return `
+                        <div id="work-item-gray-button-${e.id}" class="work-item-gray-button center" style="width: 100%; background: #a7adb8; cursor: unset;">
+                            Work in progress
+                        </div>
+                    `;
+                }
             }
+        
             renderTags(e) {
                 let t = "";
-                for (let i = 0; i < e.length; i++) t += this.tags[e[i]];
-                return t
+                for (let i = 0; i < e.length; i++) {
+                    t += this.tags[e[i]];
+                }
+                return t;
             }
+        
             addEventListenersToCard(e) {
                 const t = document.getElementById("work-item-" + e.id);
-                t.addEventListener("click", (() => {
-                    t.classList.contains("work-inactive-item-container") && document.getElementById("work-item-0").classList.contains("work-item-container-transition") && (this.experience.ui.work.cards.currentItemIndex = 4 - e.id, this.experience.ui.work.cards.updatePositions(), this.sounds.play("buttonClick"))
-                })), e.github ? (document.getElementById("work-item-gray-button-" + e.id).addEventListener("click", (() => {
-                    window.open(e.github, "_blank").focus()
-                })), e.liveview && document.getElementById("work-item-orange-button-" + e.id).addEventListener("click", (() => {
-                    window.open(e.liveview, "_blank").focus()
-                }))) : e.twitter && document.getElementById("work-item-orange-button-" + e.id).addEventListener("click", (() => {
-                    window.open(e.twitter, "_blank").focus()
-                }))
+                t.addEventListener("click", () => {
+                    if (t.classList.contains("work-inactive-item-container") && document.getElementById("work-item-0").classList.contains("work-item-container-transition")) {
+                        // --- FIX: Corrected the logic to navigate to the clicked card.
+                        // The formula to make a clicked card active is: newIndex = (total - 1) - cardId
+                        const totalItems = this.items.length;
+                        this.experience.ui.work.cards.currentItemIndex = (totalItems - 1) - e.id;
+                        this.experience.ui.work.cards.updatePositions();
+                        this.sounds.play("buttonClick");
+                    }
+                });
+        
+                if (e.github) {
+                    document.getElementById("work-item-gray-button-" + e.id).addEventListener("click", (event) => {
+                        event.stopPropagation(); // Prevent card click when button is clicked
+                        window.open(e.github, "_blank").focus();
+                    });
+                    if (e.liveview) {
+                        document.getElementById("work-item-orange-button-" + e.id).addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            window.open(e.liveview, "_blank").focus();
+                        });
+                    }
+                } else if (e.twitter) {
+                    document.getElementById("work-item-orange-button-" + e.id).addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        window.open(e.twitter, "_blank").focus();
+                    });
+                }
             }
         }
-        const af = [{
-            name: "NLP + LLM",
-            width: "90%"
-        }, {
-            name: "DL + ML",
-            width: "85%"
-        }, {
-            name: "HTML + CSS + JavaScript",
-            width: "100%"
-        }, {
-            name: "Python",
-            width: "100%"
-        }, {
-            name: "Computer Vision",
-            width: "95%"
-        }];
+        
+        // --- Data for Skills Component ---
+        const af = [
+            { name: "NLP + LLM", width: "90%" },
+            { name: "DL + ML", width: "85%" },
+            { name: "HTML + CSS + JavaScript", width: "100%" },
+            { name: "Python", width: "100%" },
+            { name: "Computer Vision", width: "95%" }
+        ];
+        
+        
+        /**
+         * Renders the skills section with progress bars.
+         */
         class of {
             domElements = {
                 skillsRenderContainer: document.getElementById("about-skills-render-container")
             };
+        
             constructor() {
-                this.skills = af, this.renderSkills()
+                this.skills = af;
+                this.renderSkills();
             }
+        
             renderSkills() {
                 this.skills.forEach((e => {
-                    this.domElements.skillsRenderContainer.insertAdjacentHTML("beforeend", `\n                <div id="about-skill-container-${this.skills.indexOf(e)}" class="row about-skill-container">\n                    <span id="about-skill-span-${this.skills.indexOf(e)}" class="about-skill-span">${e.name}</span>\n                    <div class="about-skill-bar-container">\n                        <div id="about-skill-bar-${this.skills.indexOf(e)}" class="about-skill-bar" style="width: ${e.width}"></div>\n                    </div>\n                </div>\n            `)
-                }))
+                    const skillIndex = this.skills.indexOf(e);
+                    this.domElements.skillsRenderContainer.insertAdjacentHTML("beforeend", `
+                        <div id="about-skill-container-${skillIndex}" class="row about-skill-container">
+                            <span id="about-skill-span-${skillIndex}" class="about-skill-span">${e.name}</span>
+                            <div class="about-skill-bar-container">
+                                <div id="about-skill-bar-${skillIndex}" class="about-skill-bar" style="width: ${e.width}"></div>
+                            </div>
+                        </div>
+                    `);
+                }));
             }
         }
         class lf extends Ql {
