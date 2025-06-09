@@ -5,148 +5,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sticker Sheet Generator - Dashboard</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SheetJS/xlsx library to read Excel files -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <style>
-        /* Custom styles for the application */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    <!-- Action Buttons -->
+    <div>
+        <!-- Tailwind CSS for styling -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- SheetJS/xlsx library to read Excel files -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/typesense@2/dist/typesense.min.js"></script>
+        <style>
+            /* Custom styles for the application */
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            /* Light gray background */
-        }
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f3f4f6;
+                /* Light gray background */
+            }
 
-        /* * US Letter Page and Sticker Styles (Screen Preview)
+            /* * US Letter Page and Sticker Styles (Screen Preview)
          * Using pixel dimensions derived from 96 DPI for consistent JS scaling.
          * 8.5" -> 816px, 11" -> 1056px, 10mm -> 38px
          */
-        .a4-page {
-            width: 816px;
-            height: 1056px;
-            background: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 80px 38px;
-            /* 10mm padding converted to pixels */
-            transform-origin: top left;
-            transition: transform 0.3s ease;
-            overflow: hidden;
-            /* Clip any content that might overflow */
-        }
+            .a4-page {
+                width: 816px;
+                height: 1056px;
+                background: white;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                padding: 80px 38px;
+                /* 10mm padding converted to pixels */
+                transform-origin: top left;
+                transition: transform 0.3s ease;
+                overflow: hidden;
+                /* Clip any content that might overflow */
+            }
 
-        .sticker-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 0;
-            width: 100%;
-            height: 100%;
-        }
+            .sticker-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 0;
+                width: 100%;
+                height: 100%;
+            }
 
-        #sticker-preview-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            /* Space between preview pages */
-        }
+            #sticker-preview-area {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                /* Space between preview pages */
+            }
 
-        /* Styling for each individual sticker */
-        .sticker {
-            padding: 15px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            border-radius: 6px;
-            background-color: #fff;
-            word-break: break-word;
-            /* Prevent long text from overflowing */
-        }
+            /* Styling for each individual sticker */
+            .sticker {
+                padding: 15px;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                border-radius: 6px;
+                background-color: #fff;
+                word-break: break-word;
+                /* Prevent long text from overflowing */
+            }
 
-        /* Text styling within the sticker */
-        .sticker-title {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #dc2626;
-            /* Red-600 for the brand/title */
-            transform: translateY(-15px);
-            padding: 2px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
+            /* Remove button appears on hover */
+            .remove-sticker-btn {
+                opacity: 0;
+                transition: opacity 0.2s ease;
+            }
 
-        .sticker-description {
-            font-size: 0.8rem;
-            color: #374151;
-            /* Gray-700 */
-            margin: 4px 0;
-            line-height: 1.3;
-            transform: translateY(-15px);
-            padding: 2px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
+            .sticker:hover .remove-sticker-btn {
+                opacity: 1;
+            }
 
-        .sticker-flavor {
-            font-size: 1.5rem;
-            color: #dc2626;
-            /* Gray-700 */
-            font-weight: 600;
-            /* Bold flavor */
-            line-height: 20px;
-            transform: translateY(-15px);
-            padding: 2px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
+            /* Text styling within the sticker */
+            .sticker-title {
+                font-weight: 700;
+                font-size: 1.5rem;
+                color: #dc2626;
+                /* Red-600 for the brand/title */
+                transform: translateY(-15px);
+                padding: 2px;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+            }
 
-        [contenteditable="true"]:hover {
-            border-color: #e5e7eb;
-            background-color: #f9fafb;
-            cursor: text;
-        }
+            .sticker-description {
+                font-size: 0.8rem;
+                color: #374151;
+                /* Gray-700 */
+                margin: 4px 0;
+                line-height: 1.3;
+                transform: translateY(-15px);
+                padding: 2px;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+            }
 
-        [contenteditable="true"]:focus {
-            outline: none;
-            border-color: #60a5fa;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-        }
+            .sticker-flavor {
+                font-size: 1.5rem;
+                color: #dc2626;
+                /* Gray-700 */
+                font-weight: 600;
+                /* Bold flavor */
+                line-height: 20px;
+                transform: translateY(-15px);
+                padding: 2px;
+                border: 1px solid transparent;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+            }
 
-        .sticker-price {
-            font-size: 2.0rem;
-            font-weight: 500;
-            color: #111827;
-            /* Gray-900 */
-            line-height: 35px;
-            transform: translateY(-15px);
-        }
+            [contenteditable="true"]:hover {
+                border-color: #e5e7eb;
+                background-color: #f9fafb;
+                cursor: text;
+            }
 
-        .sticker-upc {
-            font-size: 1.3rem;
-            color: #111827;
-            /* Gray-600 */
-            font-weight: 1000;
-            line-height: 20px;
-            transform: translateY(-10px);
-        }
+            [contenteditable="true"]:focus {
+                outline: none;
+                border-color: #60a5fa;
+                background-color: #ffffff;
+                box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+            }
 
-        .barcode {
-            width: 260px;
-            height: 70px;
-        }
-    </style>
+            .sticker-price {
+                font-size: 2.0rem;
+                font-weight: 500;
+                color: #111827;
+                /* Gray-900 */
+                line-height: 35px;
+                transform: translateY(-15px);
+            }
+
+            .sticker-upc {
+                font-size: 1.3rem;
+                color: #111827;
+                /* Gray-600 */
+                font-weight: 1000;
+                line-height: 20px;
+                transform: translateY(-10px);
+            }
+
+            .barcode {
+                width: 260px;
+                height: 70px;
+            }
+        </style>
 </head>
 
 <body class="p-4 sm:p-6 lg:p-8">
@@ -158,7 +171,10 @@
             <!-- Header Section -->
             <header class="text-left mb-6 pb-4 border-b border-gray-200">
                 <h1 class="text-2xl font-bold text-gray-800">Generator Controls</h1>
-                <p class="text-gray-500 mt-1 text-sm">Upload a file and generate your stickers.</p>
+                <p class="text-gray-500 mt-1 text-sm">Upload a file and generate your stickers.
+                <br>Sheet needs to have the following columns: <strong>productName, upc and standardPrice</strong></p>
+
+                </p>
             </header>
 
             <!-- Main controls -->
@@ -179,15 +195,92 @@
                     <p id="file-info" class="text-xs text-gray-500 mt-2 h-4"></p>
                 </div>
 
+                <!-- Product Search -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block flex justify-between items-center">
+                        2. Search Products
+                        <div class="flex items-center">
+                            <span class="text-xs text-gray-500 mr-2">Bulk UPC</span>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="bulk-search-toggle" class="sr-only peer">
+                                <div class="relative w-9 h-5 bg-gray-200 peer-checked:bg-blue-600 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300"></div>
+                            </label>
+                        </div>
+                    </label>
+                    
+                    <!-- Standard Search Input -->
+                    <div id="standard-search-container">
+                        <div class="relative">
+                            <input id="product-search" type="text" placeholder="Search by product name or SKU..."
+                                class="w-full bg-white border border-gray-300 rounded-md py-2 px-4 pr-10 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-colors duration-200">
+                            <div class="absolute right-2 top-2 flex items-center space-x-1">
+                                <button id="clear-search-btn" class="text-gray-400 hover:text-gray-600 hidden">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <button id="search-btn" class="text-gray-400 hover:text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bulk UPC Search Input -->
+                    <div id="bulk-search-container" class="hidden">
+                        <textarea id="bulk-upc-input" 
+                            placeholder="Enter multiple UPC codes separated by spaces, commas, or new lines..."
+                            class="w-full bg-white border border-gray-300 rounded-md py-2 px-4 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-colors duration-200 h-32 resize-none"></textarea>
+                        <div class="flex justify-end mt-2">
+                            <button id="bulk-search-btn" class="bg-blue-600 text-white text-sm px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                Search All & Add
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Results Container -->
+                    <div id="search-results"
+                        class="mt-2 bg-white border border-gray-200 rounded-md shadow-sm max-h-72 overflow-y-auto hidden z-10">
+                        <div id="search-loading" class="p-3 text-center hidden">
+                            <svg class="animate-spin h-5 w-5 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <p class="text-xs text-gray-500 mt-1">Searching...</p>
+                        </div>
+                        <ul id="search-results-list" class="divide-y divide-gray-200"></ul>
+                        <p id="search-no-results" class="p-3 text-sm text-gray-500 text-center hidden">No results found
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Action Buttons -->
                 <div>
-                    <label class="text-sm font-medium text-gray-700 mb-2 block">2. Generate & Print</label>
+                    <label class="text-sm font-medium text-gray-700 mb-2 block">3. Generate & Print</label>
                     <div class="flex flex-col space-y-3">
-                        <button id="generate-btn"
-                            class="w-full bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-md shadow-sm hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                            disabled>
-                            Generate Stickers
-                        </button>
+                        <div class="flex space-x-2">
+                            <button id="generate-btn"
+                                class="flex-grow bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-md shadow-sm hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                                disabled>
+                                Generate Stickers
+                            </button>
+                            <button id="clear-all-btn"
+                                class="bg-red-100 text-red-600 font-semibold py-2.5 px-4 rounded-md shadow-sm hover:bg-red-200 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled>
+                                Clear All
+                            </button>
+                        </div>
                         <button id="print-btn"
                             class="hidden w-full bg-gray-700 text-white font-semibold py-2.5 px-6 rounded-md shadow-sm hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
@@ -231,16 +324,50 @@
         </div>
     </div>
 
-    <script>
-        // DOM element references
+    <script>        // DOM element references
         const fileUpload = document.getElementById('file-upload');
         const fileNameSpan = document.getElementById('file-name');
         const fileInfo = document.getElementById('file-info');
         const generateBtn = document.getElementById('generate-btn');
         const printBtn = document.getElementById('print-btn');
+        const clearAllBtn = document.getElementById('clear-all-btn');
         const stickerPreviewArea = document.getElementById('sticker-preview-area');
         const loadingIndicator = document.getElementById('loading');
-        const previewInfo = document.getElementById('preview-info'); let excelData = null;
+        const previewInfo = document.getElementById('preview-info');
+        // Search elements
+        const productSearchInput = document.getElementById('product-search');
+        const searchBtn = document.getElementById('search-btn');
+        const clearSearchBtn = document.getElementById('clear-search-btn');
+        const searchResults = document.getElementById('search-results');
+        const searchResultsList = document.getElementById('search-results-list');
+        const searchLoading = document.getElementById('search-loading');
+        const searchNoResults = document.getElementById('search-no-results');
+        // Bulk search elements
+        const bulkSearchToggle = document.getElementById('bulk-search-toggle');
+        const standardSearchContainer = document.getElementById('standard-search-container');
+        const bulkSearchContainer = document.getElementById('bulk-search-container');
+        const bulkUpcInput = document.getElementById('bulk-upc-input');
+        const bulkSearchBtn = document.getElementById('bulk-search-btn');
+        
+        let excelData = null;
+        // Flag to track if we're in bulk search mode
+        let isBulkSearchMode = false;
+
+        // Initialize Typesense client
+        const typesenseClient = new Typesense.Client({
+            apiKey: "Hu52dwsas2AdxdE",
+            nodes: [
+                {
+                    host: "thejagstudio-typesense.hf.space",
+                    port: "443",
+                    protocol: "https",
+                }
+            ],
+            connectionTimeoutSeconds: 2
+        });
+
+        // Default image for products without an image
+        const DEFAULT_PRODUCT_IMAGE = "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg";
 
         // Constants for US Letter dimensions in pixels at 96 DPI for screen preview
         const A4_WIDTH_PX = 816;  // 8.5" × 96 DPI
@@ -255,7 +382,10 @@
         // Manage user edits
         let userEdits = {};
 
-        // Load saved data from localStorage
+        // Update Clear All button state
+        function updateClearAllButtonState() {
+            clearAllBtn.disabled = !excelData || excelData.length === 0;
+        }        // Load saved data from localStorage
         function loadSavedData() {
             try {
                 const savedExcelData = localStorage.getItem(STORAGE_KEYS.EXCEL_DATA);
@@ -270,6 +400,9 @@
                 if (savedUserEdits) {
                     userEdits = JSON.parse(savedUserEdits);
                 }
+                
+                // Update Clear All button state
+                updateClearAllButtonState();
             } catch (error) {
                 console.error('Error loading saved data:', error);
             }
@@ -317,6 +450,44 @@
         loadSavedData();
 
         /**
+         * Event listeners for search
+         */
+        productSearchInput.addEventListener('input', debounce(() => {
+            searchProducts(productSearchInput.value);
+        }, 300));
+
+        searchBtn.addEventListener('click', () => {
+            searchProducts(productSearchInput.value);
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('#product-search') &&
+                !event.target.closest('#search-btn') &&
+                !event.target.closest('#search-results')) {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        // Enter key triggers search
+        productSearchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchProducts(productSearchInput.value);
+            }
+        });
+
+        // Debounce function to limit how often the search is triggered
+        function debounce(func, delay) {
+            let timeout;
+            return function () {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
+
+        /**
          * Calculates scale for the preview pages.
          */
         function getPreviewScale() {
@@ -344,11 +515,10 @@
                         const workbook = XLSX.read(data, { type: 'array' });
                         const firstSheetName = workbook.SheetNames[0];
                         const worksheet = workbook.Sheets[firstSheetName];
-                        excelData = XLSX.utils.sheet_to_json(worksheet);
-
-                        // Clear previous edits and update storage
+                        excelData = XLSX.utils.sheet_to_json(worksheet);                        // Clear previous edits and update storage
                         userEdits = {};
                         saveToLocalStorage();
+                        updateClearAllButtonState();
                     } catch (error) {
                         console.error("Error reading Excel file:", error);
                         fileInfo.textContent = 'Error: Invalid or corrupted file.';
@@ -368,14 +538,20 @@
                 generateBtn.disabled = true;
                 excelData = null;
             }
-        });
-
-        /**
+        });        /**
          * Generates and displays sticker pages.
          */
         generateBtn.addEventListener('click', () => {
             if (!excelData) {
                 fileInfo.textContent = 'Please upload a valid file first.';
+                return;
+            }
+            
+            generateStickers();
+        });
+        function generateStickers() {
+            if (!excelData || excelData.length === 0) {
+                fileInfo.textContent = 'No products to display.';
                 return;
             }
 
@@ -416,6 +592,7 @@
                         const price = Number(item.standardPrice || item.UserPrice || 0).toFixed(2);
                         const sku = item.sku || item.productId || 'N/A';
                         const upc = item.upc || 'N/A';
+                        const imageUrl = item.imageUrl || null;
 
                         // Parse the productName string based on user's rule
                         const parts = productName.split(' - ').map(p => p.trim()).filter(p => p); // filter out empty parts
@@ -440,11 +617,21 @@
                         title = savedEdits.title || title;
                         description = savedEdits.description || description;
                         flavor = savedEdits.flavor || flavor;
-
-                        stickerHtmlContent += `
-                            <div class="sticker">                                <div class="sticker-title" contenteditable="true" spellcheck="false" 
-                                    onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'title')"
-                                    onpaste="handlePaste(event)">${title}</div>
+                          stickerHtmlContent += `
+                            <div class="sticker relative">
+                                <button class="remove-sticker-btn absolute right-1 top-1 z-10 bg-red-100 hover:bg-red-200 text-red-600 rounded-full p-1 transition-colors duration-200" 
+                                    onclick="removeProduct(${i * stickersPerPage + pageData.indexOf(item)})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <div class="flex w-full justify-between">
+                                    <div class="w-full">
+                                        <div class="sticker-title" contenteditable="true" spellcheck="false" 
+                                            onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'title')"
+                                            onpaste="handlePaste(event)">${title}</div>
+                                    </div>
+                                </div>
                                 <div class="flex flex-col justify-center">
                                     <div class="sticker-description" contenteditable="true" spellcheck="false"
                                         onblur="handleFieldEdit(event, ${i * stickersPerPage + pageData.indexOf(item)}, 'description')"
@@ -469,7 +656,6 @@
 
                     grid.innerHTML = stickerHtmlContent;
 
-
                     // Fill remaining grid cells with placeholders
                     const remainingStickers = stickersPerPage - pageData.length;
                     for (let j = 0; j < remainingStickers; j++) {
@@ -490,7 +676,8 @@
                 // Initialize barcodes after adding to DOM
                 JsBarcode(".barcode").init();
             }, 100);
-        });
+        }
+
         /**
         * Generates PDF from the sticker pages
         */
@@ -551,9 +738,292 @@
                     const page = wrapper.querySelector('.page-page');
                     if (page) {
                         page.style.transform = `scale(${scale})`;
+                    }                });
+            }
+        });        /**
+         * Search products in Typesense
+         */
+        async function searchProducts(query) {
+            if (!query || query.trim() === '') {
+                searchResults.classList.add('hidden');
+                clearSearchBtn.classList.add('hidden');
+                return;
+            }
+
+            // Show the clear search button
+            clearSearchBtn.classList.remove('hidden');
+
+            try {
+                searchLoading.classList.remove('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsList.innerHTML = '';
+                searchResults.classList.remove('hidden');
+                
+                const searchParameters = {
+                    q: query,
+                    query_by: isBulkSearchMode ? 'upc' : 'productName,upc', // Only search by UPC in bulk mode
+                    sort_by: '_text_match:desc',
+                    per_page: 15
+                };
+
+                const searchResultsData = await typesenseClient
+                    .collections('101')
+                    .documents()
+                    .search(searchParameters);
+                
+                renderSearchResults(searchResultsData);
+            } catch (error) {
+                console.error('Error searching products:', error);
+                searchResultsList.innerHTML = '';
+                searchNoResults.textContent = 'Error searching products. Please try again.';
+                searchNoResults.classList.remove('hidden');
+            } finally {
+                searchLoading.classList.add('hidden');
+            }
+        }        /**
+         * Render search results in the dropdown
+         */
+        function renderSearchResults(results) {
+            searchResultsList.innerHTML = '';
+
+            if (!results.hits || results.hits.length === 0) {
+                searchNoResults.classList.remove('hidden');
+                return;
+            }
+
+            results.hits.forEach(hit => {
+                const product = hit.document;
+                const listItem = document.createElement('li');
+                listItem.className = 'p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-150';
+
+                const productName = product.productName || 'No Product Name';
+                const price = Number(product.standardPrice || product.UserPrice || 0).toFixed(2);
+                const sku = product.sku || product.productId || 'N/A';
+                const upc = product.upc || 'N/A';
+                const imageUrl = product.imageUrl || DEFAULT_PRODUCT_IMAGE;
+
+                listItem.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-12 h-12">
+                            <img src="${imageUrl}" alt="${productName}" 
+                                class="w-full h-full object-contain border border-gray-200 rounded-md"
+                                onerror="this.onerror=null; this.src='${DEFAULT_PRODUCT_IMAGE}'">
+                        </div>
+                        <div class="flex-grow flex justify-between items-start">
+                            <div>
+                                <p class="font-medium text-gray-800">${productName}</p>
+                                <p class="text-xs text-gray-500">SKU: ${sku} | UPC: ${upc}</p>
+                            </div>
+                            <span class="text-blue-600 font-semibold">$${price}</span>
+                        </div>
+                    </div>
+                `;                // Add click event to add the product to the sticker sheet
+                listItem.addEventListener('click', () => {
+                    addProductToStickerSheet(product);
+                    
+                    // Show visual feedback on this item instead of hiding results
+                    const checkmarkIcon = document.createElement('div');
+                    checkmarkIcon.innerHTML = `
+                        <div class="absolute right-3 top-3 bg-green-500 text-white rounded-full p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                    `;
+                    listItem.style.position = 'relative';
+                    listItem.appendChild(checkmarkIcon.firstElementChild);
+                    
+                    // Briefly highlight the item
+                    listItem.classList.add('bg-green-50');
+                    setTimeout(() => {
+                        listItem.classList.remove('bg-green-50');
+                    }, 1000);
+
+                    // Keep search results open for adding multiple products
+                    // searchResults.classList.add('hidden');
+                    // productSearchInput.value = '';
+                });
+
+                searchResultsList.appendChild(listItem);
+            });
+
+            searchNoResults.classList.add('hidden');
+        }        /**
+         * Add a product from search to the sticker sheet
+         */
+        function addProductToStickerSheet(product) {
+            // Initialize excelData array if it doesn't exist
+            if (!excelData) {
+                excelData = [];
+            }
+
+            // Add the product to the excelData array
+            excelData.push(product);
+
+            // Update localStorage
+            saveToLocalStorage();
+
+            // Enable generate button and update Clear All button state
+            generateBtn.disabled = false;
+            updateClearAllButtonState();
+
+            // Show notification
+            fileInfo.textContent = `Added "${product.productName || 'product'}" to sticker sheet.`;
+
+            // Automatically regenerate the preview
+            generateStickers();
+        }
+
+        /**
+         * Remove a product from the sticker sheet
+         */
+        function removeProduct(index) {
+            if (excelData && index >= 0 && index < excelData.length) {
+                // Get the product name for notification
+                const productName = excelData[index].productName || 'product';
+                
+                // Remove the product from the array
+                excelData.splice(index, 1);
+                
+                // Remove any user edits for this product
+                delete userEdits[index];
+                
+                // Adjust indices for user edits after the removed product
+                const newUserEdits = {};
+                Object.keys(userEdits).forEach(key => {
+                    const keyIndex = parseInt(key);
+                    if (keyIndex > index) {
+                        newUserEdits[keyIndex - 1] = userEdits[keyIndex];
+                    } else if (keyIndex < index) {
+                        newUserEdits[keyIndex] = userEdits[keyIndex];
                     }
                 });
+                userEdits = newUserEdits;
+                
+                // Update localStorage
+                saveToLocalStorage();
+                
+                // Update button states
+                updateClearAllButtonState();
+                
+                // Show notification
+                fileInfo.textContent = `Removed "${productName}" from sticker sheet.`;
+                
+                // Regenerate the preview
+                generateStickers();
             }
+        }
+        
+        /**
+         * Clear all products from the sticker sheet
+         */
+        function clearAllProducts() {
+            if (excelData && excelData.length > 0) {
+                // Clear the data
+                excelData = [];
+                userEdits = {};
+                
+                // Update localStorage
+                saveToLocalStorage();
+                
+                // Update button states
+                updateClearAllButtonState();
+                generateBtn.disabled = true;
+                printBtn.classList.add('hidden');
+                
+                // Clear the preview
+                stickerPreviewArea.innerHTML = '';
+                previewInfo.textContent = 'Your generated sticker sheets will appear here.';
+                
+                // Show notification
+                fileInfo.textContent = 'All products cleared from sticker sheet.';
+            }
+        }
+          // Add event listener for Clear All button
+        clearAllBtn.addEventListener('click', clearAllProducts);
+        
+        // Add event listener for clear search button
+        clearSearchBtn.addEventListener('click', () => {
+            productSearchInput.value = '';
+            searchResults.classList.add('hidden');
+            clearSearchBtn.classList.add('hidden');
+        });
+
+        /**
+         * Toggle bulk search mode
+         */
+        bulkSearchToggle.addEventListener('change', () => {
+            const isChecked = bulkSearchToggle.checked;
+            if (isChecked) {
+                // Switch to bulk search mode
+                standardSearchContainer.classList.add('hidden');
+                bulkSearchContainer.classList.remove('hidden');
+                productSearchInput.value = ''; // Clear standard search input
+            } else {
+                // Switch back to standard search mode
+                standardSearchContainer.classList.remove('hidden');
+                bulkSearchContainer.classList.add('hidden');
+                bulkUpcInput.value = ''; // Clear bulk UPC input
+            }
+        });
+
+        /**
+         * Handle bulk search and add products
+         */
+        bulkSearchBtn.addEventListener('click', () => {
+            const upcCodes = bulkUpcInput.value.split(/[\s,]+/).filter(code => code.trim() !== '');
+            if (upcCodes.length === 0) {
+                fileInfo.textContent = 'Please enter at least one UPC code.';
+                return;
+            }
+
+            loadingIndicator.classList.remove('hidden');
+            searchResults.classList.add('hidden');
+            generateBtn.disabled = true;
+            fileInfo.textContent = 'Searching and adding products...';
+
+            // Clear previous search results
+            searchResultsList.innerHTML = '';
+
+            // Function to search and add a single UPC code
+            const searchAndAddUPC = async (upcCode) => {
+                try {
+                    const searchParameters = {
+                        q: upcCode,
+                        query_by: 'upc',
+                        sort_by: '_text_match:desc',
+                        per_page: 1 // Only need the first match
+                    };
+
+                    const searchResultsData = await typesenseClient
+                        .collections('101')
+                        .documents()
+                        .search(searchParameters);
+
+                    if (searchResultsData.hits && searchResultsData.hits.length > 0) {
+                        const product = searchResultsData.hits[0].document;
+                        addProductToStickerSheet(product);
+                    } else {
+                        console.warn(`No product found for UPC: ${upcCode}`);
+                    }
+                } catch (error) {
+                    console.error('Error searching product by UPC:', error);
+                }
+            };
+
+            // Process each UPC code sequentially
+            const processUPCSequentially = async () => {
+                for (const upcCode of upcCodes) {
+                    await searchAndAddUPC(upcCode);
+                }
+                loadingIndicator.classList.add('hidden');
+                generateBtn.disabled = false;
+                fileInfo.textContent = `Added ${upcCodes.length} products to sticker sheet.`;
+                // Automatically regenerate the preview
+                generateStickers();
+            };
+
+            processUPCSequentially();
         });
     </script>
 
