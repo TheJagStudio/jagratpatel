@@ -21,7 +21,7 @@
 
             @font-face {
                 font-family: 'Arial Rounded MT Bold';
-                src: url('https://jagratpatel.tech/arialroundedmtbold.ttf') format('truetype');
+                src: url('https://thejagstudio-corsanywhere1.hf.space/https://online-fonts.com/sites/default/files/2021-09/arialroundedmtbold.ttf') format('truetype');
                 font-weight: bolder;
                 font-style: bolder;
             }
@@ -737,8 +737,10 @@
             }
 
             // Auto print the PDF
-            doc.autoPrint();
-            doc.output('dataurlnewwindow');
+            // doc.autoPrint();
+            // doc.output('dataurlnewwindow');
+            // download the pdf
+            doc.save('stickers.pdf');
         });
 
         /**
