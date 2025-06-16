@@ -337,10 +337,21 @@
                 class="bg-gray-200/50 p-4 rounded-xl border border-gray-200 h-[80vh] overflow-y-auto">
                 <!-- A4 pages will be dynamically inserted here -->
             </div>
+
+            <!-- Missing Products Section -->
+            <div id="missing-products" class="mt-4 hidden">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Missing Products</h3>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <p class="text-sm text-yellow-800 mb-2">The following UPC codes were not found:</p>
+                    <ul id="missing-products-list" class="list-disc list-inside text-sm text-yellow-700">
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>        // DOM element references
+    <script>
+        // DOM element references
         const fileUpload = document.getElementById('file-upload');
         const fileNameSpan = document.getElementById('file-name');
         const fileInfo = document.getElementById('file-info');
@@ -702,45 +713,58 @@
             const pages = document.querySelectorAll('.page-wrapper');
             let currentPage = 0;
 
-            // Create PDF with Letter size dimensions (8.5 x 11 inches)
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'in',
-                format: 'letter'
-            });
+            // Show loading indicator
+            loadingIndicator.classList.remove('hidden');
+            printBtn.disabled = true;
+            fileInfo.textContent = 'Generating PDF...';
 
-            for (const page of pages) {
-                try {
-                    // Convert each page to canvas
-                    const canvas = await html2canvas(page, {
-                        scale: 2, // Higher scale for better quality
-                        useCORS: true,
-                        logging: false,
-                        width: page.offsetWidth,
-                        height: page.offsetHeight
-                    });
+            try {
+                // Create PDF with Letter size dimensions (8.5 x 11 inches)
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'in',
+                    format: 'letter'
+                });
 
-                    // Convert canvas to image
-                    const imgData = canvas.toDataURL('image/jpeg', 2.0);
-                    // Add new page for all pages except the first
-                    if (currentPage > 0) {
-                        doc.addPage('letter', 'portrait');
+                for (const page of pages) {
+                    try {
+                        // Update loading message
+                        fileInfo.textContent = `Generating PDF: page ${currentPage + 1} of ${pages.length}...`;
+
+                        // Convert each page to canvas
+                        const canvas = await html2canvas(page, {
+                            scale: 2,
+                            useCORS: true,
+                            logging: false,
+                            width: page.offsetWidth,
+                            height: page.offsetHeight
+                        });
+
+                        // Convert canvas to image
+                        const imgData = canvas.toDataURL('image/jpeg', 2.0);
+                        
+                        if (currentPage > 0) {
+                            doc.addPage('letter', 'portrait');
+                        }
+
+                        doc.addImage(imgData, 'JPEG', 0, 0, 8.5, 11, undefined, 'FAST');
+                        currentPage++;
+                    } catch (error) {
+                        console.error('Error generating PDF page:', error);
                     }
-
-                    // Add image to PDF, fitting to page width with proper margins
-                    doc.addImage(imgData, 'JPEG', 0, 0, 8.5, 11, undefined, 'FAST');
-
-                    currentPage++;
-                } catch (error) {
-                    console.error('Error generating PDF:', error);
                 }
-            }
 
-            // Auto print the PDF
-            // doc.autoPrint();
-            // doc.output('dataurlnewwindow');
-            // download the pdf
-            doc.save('stickers.pdf');
+                // Save the PDF
+                doc.save('stickers.pdf');
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                fileInfo.textContent = 'Error generating PDF. Please try again.';
+            } finally {
+                // Hide loading indicator and reset button
+                loadingIndicator.classList.add('hidden');
+                printBtn.disabled = false;
+                fileInfo.textContent = 'PDF generated successfully.';
+            }
         });
 
         /**
@@ -1001,8 +1025,9 @@
             generateBtn.disabled = true;
             fileInfo.textContent = 'Searching and adding products...';
 
-            // Clear previous search results
+            // Clear previous search results and missing products
             searchResultsList.innerHTML = '';
+            const missingProducts = [];
 
             // Function to search and add a single UPC code
             const searchAndAddUPC = async (upcCode) => {
@@ -1011,7 +1036,7 @@
                         q: upcCode,
                         query_by: 'upc',
                         sort_by: '_text_match:desc',
-                        per_page: 1 // Only need the first match
+                        per_page: 1
                     };
 
                     const searchResultsData = await typesenseClient
@@ -1023,10 +1048,11 @@
                         const product = searchResultsData.hits[0].document;
                         addProductToStickerSheet(product);
                     } else {
-                        console.warn(`No product found for UPC: ${upcCode}`);
+                        missingProducts.push(upcCode);
                     }
                 } catch (error) {
                     console.error('Error searching product by UPC:', error);
+                    missingProducts.push(upcCode);
                 }
             };
 
@@ -1035,9 +1061,27 @@
                 for (const upcCode of upcCodes) {
                     await searchAndAddUPC(upcCode);
                 }
+                
+                // Update UI with results
                 loadingIndicator.classList.add('hidden');
                 generateBtn.disabled = false;
-                fileInfo.textContent = `Added ${upcCodes.length} products to sticker sheet.`;
+                
+                const foundCount = upcCodes.length - missingProducts.length;
+                fileInfo.textContent = `Added ${foundCount} products to sticker sheet.`;
+
+                // Show missing products if any
+                const missingProductsSection = document.getElementById('missing-products');
+                const missingProductsList = document.getElementById('missing-products-list');
+                
+                if (missingProducts.length > 0) {
+                    missingProductsList.innerHTML = missingProducts
+                        .map(upc => `<li>UPC: ${upc}</li>`)
+                        .join('');
+                    missingProductsSection.classList.remove('hidden');
+                } else {
+                    missingProductsSection.classList.add('hidden');
+                }
+
                 // Automatically regenerate the preview
                 generateStickers();
             };
