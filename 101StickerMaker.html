@@ -807,7 +807,7 @@
                     query_by: isBulkSearchMode ? 'upc,sku' : 'productName,upc,sku', // Only search by UPC in bulk mode
                     sort_by: '_text_match:desc',
                     per_page: 15,
-                    typo_tokens_threshold: isBulkSearchMode ? 0 : 0, // Adjust typo tolerance
+                    
                 };
 
                 const searchResultsData = await typesenseClient
@@ -1035,10 +1035,10 @@
                 try {
                     const searchParameters = {
                         q: upcCode,
-                        query_by: 'upc',
+                        query_by: 'upc,sku',
                         sort_by: '_text_match:desc',
                         per_page: 1,
-                        typo_tokens_threshold: isBulkSearchMode ? 0 : 0,
+                        
                     };
 
                     const searchResultsData = await typesenseClient
