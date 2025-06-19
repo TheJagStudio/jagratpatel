@@ -385,10 +385,10 @@
             apiKey: "Hu52dwsas2AdxdE",
             nodes: [
                 {
-                    host: "thejagstudio-typesense.hf.space",
-                    port: "443",
-                    protocol: "https",
-                }
+                    "host": "185.28.22.68",
+                    "port": "7860",
+                    "protocol": "http",
+                },
             ],
             connectionTimeoutSeconds: 2
         });
@@ -742,7 +742,7 @@
 
                         // Convert canvas to image
                         const imgData = canvas.toDataURL('image/jpeg', 2.0);
-                        
+
                         if (currentPage > 0) {
                             doc.addPage('letter', 'portrait');
                         }
@@ -807,7 +807,7 @@
                     query_by: isBulkSearchMode ? 'upc,sku' : 'productName,upc,sku', // Only search by UPC in bulk mode
                     sort_by: '_text_match:desc',
                     per_page: 15,
-                    
+
                 };
 
                 const searchResultsData = await typesenseClient
@@ -1038,7 +1038,7 @@
                         query_by: 'upc,sku',
                         sort_by: '_text_match:desc',
                         per_page: 1,
-                        
+
                     };
 
                     const searchResultsData = await typesenseClient
@@ -1063,18 +1063,18 @@
                 for (const upcCode of upcCodes) {
                     await searchAndAddUPC(upcCode);
                 }
-                
+
                 // Update UI with results
                 loadingIndicator.classList.add('hidden');
                 generateBtn.disabled = false;
-                
+
                 const foundCount = upcCodes.length - missingProducts.length;
                 fileInfo.textContent = `Added ${foundCount} products to sticker sheet.`;
 
                 // Show missing products if any
                 const missingProductsSection = document.getElementById('missing-products');
                 const missingProductsList = document.getElementById('missing-products-list');
-                
+
                 if (missingProducts.length > 0) {
                     missingProductsList.innerHTML = missingProducts
                         .map(upc => `<li>UPC: ${upc}</li>`)
