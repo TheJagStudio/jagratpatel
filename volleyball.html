@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Volleyball Tournament Registration</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/5496/5496293.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #FDB44B 0%, #F59E0B 50%, #F97316 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Decorative diagonal stripes like poster */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -10%;
+            width: 200px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(-25deg);
+            animation: slideStripe 3s ease-in-out infinite;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: 5%;
+            width: 150px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.08);
+            transform: rotate(-25deg);
+            animation: slideStripe 3s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes slideStripe {
+            0%, 100% { transform: translateY(0) rotate(-25deg); }
+            50% { transform: translateY(-30px) rotate(-25deg); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 250, 240, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px 0 rgba(217, 119, 6, 0.3);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .pulse-border {
+            animation: pulseBorder 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBorder {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(217, 119, 6, 0); }
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+        }
+        
+        .input-group {
+            position: relative;
+            border: 2px solid #D1D5DB;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .input-group:focus-within {
+            border-color: #FDB44B;
+        }
+        
+        .input-group label {
+            position: absolute;
+            left: 1rem;
+            top: 0.75rem;
+            transition: all 0.3s ease;
+            color: #374151;
+            pointer-events: none;
+            font-weight: 500;
+        }
+        
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label,
+        .input-group select:focus + label,
+        .input-group select:not([value=""]) + label {
+            top: -0.5rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: #D97706;
+            background: #FFFAF0;
+            padding: 0 0.25rem;
+            font-weight: 600;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2E5984 100%);
+            transition: all 0.3s ease;
+            border: 3px solid #FDB44B;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(30, 58, 95, 0.4);
+            border-color: #F59E0B;
+        }
+        
+        .hidden-field {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.5s ease, margin 0.5s ease;
+            margin: 0;
+        }
+        
+        .visible-field {
+            max-height: 500px;
+            opacity: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .radio-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid #D1D5DB;
+        }
+        
+        .radio-option:hover {
+            background: linear-gradient(135deg, rgba(253, 180, 75, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-color: #FDB44B;
+            transform: translateX(5px);
+        }
+        
+        .radio-option.selected {
+            background: linear-gradient(135deg, rgba(253, 180, 75, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+            border-color: #D97706;
+            border-width: 3px;
+        }
+        
+        .checkbox-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #D1D5DB;
+        }
+        
+        .checkbox-option:hover {
+            background: linear-gradient(135deg, rgba(253, 180, 75, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border-color: #FDB44B;
+            transform: translateX(3px);
+        }
+        
+        .checkbox-option:has(input:checked) {
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.1) 0%, rgba(46, 89, 132, 0.1) 100%);
+            border-color: #1E3A5F;
+        }
+        
+        .title-text {
+            color: #1E3A5F;
+            font-weight: 900;
+            text-shadow: 3px 3px 0px rgba(253, 180, 75, 0.3);
+        }
+        
+        .section-title {
+            color: #1E3A5F;
+            font-weight: 800;
+            border-left: 5px solid #FDB44B;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        input[type="radio"]:checked,
+        input[type="checkbox"]:checked {
+            accent-color: #1E3A5F;
+        }
+        
+        /* Decorative dots */
+        .dots-decoration {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            height: 50px;
+            background-image: radial-gradient(circle, #FDB44B 2px, transparent 2px);
+            background-size: 15px 15px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .dropdown-selected {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            padding: 0.75rem 1rem;
+            background: white;
+            border: 3px solid #D1D5DB;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+                
+        .dropdown-selected.active {
+            border-color: #FDB44B;
+        }
+        
+        .dropdown-arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-arrow.rotated {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 3px solid #FDB44B;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+        
+        .dropdown-options.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-option:hover {
+            background: linear-gradient(135deg, rgba(253, 180, 75, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            color: #D97706;
+            font-weight: 700;
+        }
+        
+        .dropdown-option.selected {
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.1) 0%, rgba(46, 89, 132, 0.1) 100%);
+            color: #1E3A5F;
+            font-weight: 700;
+        }
+        
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="dots-decoration"></div>
+    
+    <div class="max-w-4xl mx-auto relative z-10">
+        <!-- Header -->
+        <div class="glass-effect rounded-3xl p-8 mb-8 fade-in border-4 border-amber-400">
+            <div class="w-full flex items-center justify-center  floating mb-6">
+                <img src="https://i.ibb.co/Zt0NWS2/dreamina-2025-10-18-9164-upscale.png" alt="Volleyball Icon" class="w-fit h-16 bg-white p-1 rounded-lg shadow-lg border-2 border-amber-400 bg-blend-screen">
+            </div>
+            <div class="text-center mb-2">
+                <span class="inline-block text-2xl md:text-3xl scale-150 font-bold text-amber-600 italic transform -rotate-3 mb-4" style="-webkit-text-stroke: 1px black;">Winter</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-center mb-2 title-text leading-tight">
+                VOLLEYBALL<br>TOURNAMENT
+            </h1>
+            <div class="inline-block bg-amber-400 rounded-full px-8 py-3 mx-auto mt-4 mb-4 shadow-lg" style="display: block; width: fit-content;">
+                <p class="text-2xl md:text-3xl font-black text-gray-800">NOVEMBER 8, 2025</p>
+            </div>
+            <div class="text-center space-y-1">
+                <p class="text-xl md:text-2xl font-bold text-gray-800">09:00 AM ONWARDS</p>
+                <p class="text-lg md:text-xl font-bold text-gray-700">SIDEOUT SPORTS</p>
+                <p class="text-base md:text-lg font-semibold text-gray-600">26 LAW DRIVE, SUITE A</p>
+                <p class="text-base md:text-lg font-semibold text-gray-600">FAIRFIELD, NJ-07004</p>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <form id="registrationForm" action="https://docs.google.com/forms/d/e/1FAIpQLSd2pU7twvxpR_1IQiLdMFyZJu2Wq4CdjjpAuioU2_DeFDislA/formResponse" method="POST" target="_blank" class="glass-effect rounded-3xl p-8 fade-in border-4 border-amber-400">
+            <h2 class="section-title text-3xl">Registration Form</h2>
+            
+            <!-- Email -->
+            <div class="input-group slide-in">
+                <input type="email" name="emailAddress" id="email" placeholder=" " required
+                    class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                <label for="email">Email Address *</label>
+            </div>
+
+            <!-- Registration Type -->
+            <div class="mb-6 slide-in">
+                <label class="block text-gray-800 font-bold text-lg mb-3">Registration Type *</label>
+                <div class="space-y-3">
+                    <div class="radio-option rounded-xl p-5 flex items-center bg-white" data-value="Individual Registration (Looking to be placed on a team)">
+                        <input type="radio" name="entry.1494300944" value="Individual Registration (Looking to be placed on a team)" 
+                            id="individual" class="w-6 h-6" required>
+                        <label for="individual" class="ml-4 cursor-pointer flex-1">
+                            <span class="font-bold text-lg text-gray-800">Individual Registration</span>
+                            <span class="block text-sm text-gray-600 mt-1">Looking to be placed on a team</span>
+                        </label>
+                    </div>
+                    <div class="radio-option rounded-xl p-5 flex items-center bg-white" data-value="Team Registration">
+                        <input type="radio" name="entry.1494300944" value="Team Registration" 
+                            id="team" class="w-6 h-6">
+                        <label for="team" class="ml-4 cursor-pointer flex-1">
+                            <span class="font-bold text-lg text-gray-800">Team Registration</span>
+                            <span class="block text-sm text-gray-600 mt-1">Register as a complete team</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Name (Only for Team Registration) -->
+            <div id="teamNameField" class="hidden-field">
+                <div class="input-group">
+                    <input type="text" name="entry.43995805" id="teamName" placeholder=" "
+                        class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                    <label for="teamName">Team Name *</label>
+                </div>
+            </div>
+
+            <!-- Main Contact Person -->
+            <div class="input-group slide-in">
+                <input type="text" name="entry.1902049626" id="contactName" placeholder=" " required
+                    class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                <label for="contactName">Main Contact Person Full Name *</label>
+            </div>
+
+            <!-- Contact Email -->
+            <div class="input-group slide-in">
+                <input type="email" name="entry.787994367" id="contactEmail" placeholder=" " required
+                    class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                <label for="contactEmail">Contact Person Email Address *</label>
+            </div>
+
+            <!-- Contact Phone -->
+            <div class="input-group slide-in">
+                <input type="tel" name="entry.13983966" id="contactPhone" placeholder=" " required
+                    class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                <label for="contactPhone">Contact Person Phone Number *</label>
+            </div>
+
+            <!-- Skill Level -->
+            <div class="font-bold text-[#374151]">Preferred Skill Level *</div>
+            <div class="mb-6 slide-in">
+                <div class="custom-dropdown" id="skillLevelDropdown">
+                    <div class="dropdown-selected" id="skillLevelSelected">
+                        <span class="dropdown-text text-[#374151]">Choose your skill level</span>
+                        <svg class="dropdown-arrow w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="dropdown-options" id="skillLevelOptions">
+                        <div class="dropdown-option" data-value="Beginner">Beginner</div>
+                        <div class="dropdown-option" data-value="Intermediate">Intermediate</div>
+                        <div class="dropdown-option" data-value="Advanced">Advanced</div>
+                        <div class="dropdown-option" data-value="Competitive/Open">Competitive/Open</div>
+                    </div>
+                </div>
+                <!-- Hidden input for form submission -->
+                <input type="hidden" name="entry.1508512228" id="skillLevel" required>
+            </div>
+
+            <!-- Number of Players (Only for Team Registration) -->
+            <div id="numPlayersField" class="hidden-field">
+                <div class="input-group">
+                    <input type="number" name="entry.518737658" id="numPlayers" placeholder=" " min="1" max="8"
+                        class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                    <label for="numPlayers">Number of Players on Team (Max 6) *</label>
+                </div>
+            </div>
+
+            <!-- Players Section -->
+            <div class="mb-6">
+                <h3 class="section-title text-2xl">Player Information</h3>
+                
+                <!-- Player 1 -->
+                <div class="input-group slide-in">
+                    <input type="text" name="entry.1042025998" id="player1" placeholder=" " required
+                        class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                    <label for="player1"><span id="player1Label">Player 1 (Captain/Individual) Full Name</span> *</label>
+                </div>
+
+                <!-- Player 2-6 (Only for Team Registration) -->
+                <div id="additionalPlayers" class="hidden-field space-y-4">
+                    <div class="input-group">
+                        <input type="text" name="entry.918527656" id="player2" placeholder=" " autocomplete="off" aria-autocomplete="none" autocorrect="off" autocapitalize="off" spellcheck="false"
+                            class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                        <label for="player2">Player 2 Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="entry.1257040628" id="player3" placeholder=" " autocomplete="off" aria-autocomplete="none" autocorrect="off" autocapitalize="off" spellcheck="false"
+                            class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                        <label for="player3">Player 3 Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="entry.562622870" id="player4" placeholder=" " autocomplete="off" aria-autocomplete="none" autocorrect="off" autocapitalize="off" spellcheck="false"
+                            class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                        <label for="player4">Player 4 Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="entry.29116831" id="player5" placeholder=" " autocomplete="off" aria-autocomplete="none" autocorrect="off" autocapitalize="off" spellcheck="false"
+                            class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                        <label for="player5">Player 5 Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="entry.2142269332" id="player6" placeholder=" " autocomplete="off" aria-autocomplete="none" autocorrect="off" autocapitalize="off" spellcheck="false"
+                            class="w-full px-4 py-3 border-3 border-gray-300 rounded-xl transition-all duration-300 bg-white focus:bg-amber-50">
+                        <label for="player6">Player 6 Full Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agreement Checkbox -->
+            <div class="mb-6 slide-in bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox" name="entry.32487874" value="Yes, I agree" required
+                        class="w-6 h-6 mt-1 rounded">
+                    <span class="ml-3 text-gray-800 font-semibold">
+                        I agree to the tournament rules and liability waiver (Details will be provided via email). *
+                    </span>
+                </label>
+            </div>
+
+            <!-- How did you hear about us -->
+            <div class="mb-8 slide-in">
+                <label class="block text-gray-800 font-bold text-lg mb-3">How did you hear about the tournament?</label>
+                <div class="space-y-2">
+                    <label class="checkbox-option flex items-center rounded-lg p-3 bg-white">
+                        <input type="checkbox" name="entry.417222893" value="Social Media" class="w-5 h-5 rounded">
+                        <span class="ml-3 font-medium">Social Media</span>
+                    </label>
+                    <label class="checkbox-option flex items-center rounded-lg p-3 bg-white">
+                        <input type="checkbox" name="entry.417222893" value="Word of Mouth" class="w-5 h-5 rounded">
+                        <span class="ml-3 font-medium">Word of Mouth</span>
+                    </label>
+                    <label class="checkbox-option flex items-center rounded-lg p-3 bg-white">
+                        <input type="checkbox" name="entry.417222893" value="SIDEOUT SPORTS Website/Email" class="w-5 h-5 rounded">
+                        <span class="ml-3 font-medium">SIDEOUT SPORTS Website/Email</span>
+                    </label>
+                    <label class="checkbox-option flex items-center rounded-lg p-3 bg-white">
+                        <input type="checkbox" name="entry.417222893" value="Flyer/Poster" class="w-5 h-5 rounded">
+                        <span class="ml-3 font-medium">Flyer/Poster</span>
+                    </label>
+                    <label class="checkbox-option flex items-center rounded-lg p-3 bg-white">
+                        <input type="checkbox" name="entry.417222893" value="Other" class="w-5 h-5 rounded">
+                        <span class="ml-3 font-medium">Other</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                class="btn-submit w-full text-white font-black py-5 px-8 rounded-xl text-xl pulse-border uppercase tracking-wide">
+                Register Now
+            </button>
+
+            <p class="text-center text-base text-gray-700 mt-6 font-semibold">
+                Questions? Call: <a href="tel:+12018739023" class="text-blue-900 hover:underline font-bold">+1 (201) 873-9023</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Radio option visual feedback
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                
+                // Remove selected class from all options
+                document.querySelectorAll('.radio-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Trigger change event
+                radio.dispatchEvent(new Event('change'));
+            });
+        });
+
+        // Handle registration type change
+        const individualRadio = document.getElementById('individual');
+        const teamRadio = document.getElementById('team');
+        const teamNameField = document.getElementById('teamNameField');
+        const numPlayersField = document.getElementById('numPlayersField');
+        const additionalPlayers = document.getElementById('additionalPlayers');
+        const teamNameInput = document.getElementById('teamName');
+        const numPlayersInput = document.getElementById('numPlayers');
+        const player1Label = document.getElementById('player1Label');
+
+        function updateFormFields() {
+            if (teamRadio.checked) {
+                // Team Registration
+                teamNameField.classList.remove('hidden-field');
+                teamNameField.classList.add('visible-field');
+                numPlayersField.classList.remove('hidden-field');
+                numPlayersField.classList.add('visible-field');
+                additionalPlayers.classList.remove('hidden-field');
+                additionalPlayers.classList.add('visible-field');
+                
+                teamNameInput.required = true;
+                numPlayersInput.required = true;
+                player1Label.textContent = 'Team Captain Full Name';
+            } else {
+                // Individual Registration
+                teamNameField.classList.remove('visible-field');
+                teamNameField.classList.add('hidden-field');
+                numPlayersField.classList.remove('visible-field');
+                numPlayersField.classList.add('hidden-field');
+                additionalPlayers.classList.remove('visible-field');
+                additionalPlayers.classList.add('hidden-field');
+                
+                teamNameInput.required = false;
+                numPlayersInput.required = false;
+                player1Label.textContent = 'Player 1 (Captain/Individual) Full Name';
+                
+                // Clear team-specific fields
+                teamNameInput.value = '';
+                numPlayersInput.value = '';
+                document.querySelectorAll('#additionalPlayers input').forEach(input => {
+                    input.value = '';
+                });
+            }
+        }
+
+        individualRadio.addEventListener('change', updateFormFields);
+        teamRadio.addEventListener('change', updateFormFields);
+
+        // Custom Dropdown Functionality
+        const skillDropdown = document.getElementById('skillLevelDropdown');
+        const skillSelected = document.getElementById('skillLevelSelected');
+        const skillOptions = document.getElementById('skillLevelOptions');
+        const skillArrow = skillSelected.querySelector('.dropdown-arrow');
+        const skillText = skillSelected.querySelector('.dropdown-text');
+        const skillInput = document.getElementById('skillLevel');
+
+        // Toggle dropdown
+        skillSelected.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = skillOptions.classList.contains('show');
+            
+            // Close all dropdowns first
+            document.querySelectorAll('.dropdown-options').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+            document.querySelectorAll('.dropdown-selected').forEach(selected => {
+                selected.classList.remove('active');
+            });
+            document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+                arrow.classList.remove('rotated');
+            });
+            
+            if (!isOpen) {
+                skillOptions.classList.add('show');
+                skillSelected.classList.add('active');
+                skillArrow.classList.add('rotated');
+            }
+        });
+
+        // Handle option selection
+        skillOptions.addEventListener('click', function(e) {
+            if (e.target.classList.contains('dropdown-option')) {
+                const value = e.target.getAttribute('data-value');
+                const text = e.target.textContent;
+                
+                // Update selected text and hidden input
+                skillText.textContent = text;
+                skillInput.value = value;
+                
+                // Update visual state
+                document.querySelectorAll('#skillLevelOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                e.target.classList.add('selected');
+                
+                // Close dropdown
+                skillOptions.classList.remove('show');
+                skillSelected.classList.remove('active');
+                skillArrow.classList.remove('rotated');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            skillOptions.classList.remove('show');
+            skillSelected.classList.remove('active');
+            skillArrow.classList.remove('rotated');
+        });
+
+        // Form submission handling
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            button.innerHTML = '<svg class="animate-spin h-6 w-6 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = '✓ Registration Submitted!';
+                button.classList.add('bg-green-600');
+            }, 2000);
+        });
+
+        // Add animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('slide-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('.input-group, .mb-6').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
